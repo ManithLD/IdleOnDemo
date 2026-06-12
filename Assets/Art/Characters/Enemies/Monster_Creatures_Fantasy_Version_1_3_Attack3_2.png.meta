@@ -1,0 +1,676 @@
+fileFormatVersion: 2
+guid: d18bb5f16e2900b44a3303319df039f0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1643659313886152235
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_0
+  - first:
+      213: -8862805855023387054
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_1
+  - first:
+      213: -1429284156100190890
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_2
+  - first:
+      213: 4732282828616862362
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_3
+  - first:
+      213: 4292773385515746131
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_4
+  - first:
+      213: 2068258833995148784
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_5
+  - first:
+      213: 2064774486580535565
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_6
+  - first:
+      213: 5837150104809074426
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_7
+  - first:
+      213: 9124957493315644849
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_8
+  - first:
+      213: 7547034620705553187
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_9
+  - first:
+      213: 5427416956494131882
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_10
+  - first:
+      213: 8211800250099455188
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_11
+  - first:
+      213: -7672763959675142448
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_12
+  - first:
+      213: 1591161067510075692
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_13
+  - first:
+      213: -5186241315675198402
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_14
+  - first:
+      213: -1946921405032586048
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_15
+  - first:
+      213: -8721011748280475539
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_16
+  - first:
+      213: -2511180412411443919
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_17
+  - first:
+      213: -28773916492466406
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_18
+  - first:
+      213: -6449272710852515598
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_19
+  - first:
+      213: -8366523453850913069
+    second: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_0
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 48
+        width: 27
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2642ffff637fc610800000000000000
+      internalID: 1643659313886152235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_1
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 48
+        width: 25
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25e2412380df00580800000000000000
+      internalID: -8862805855023387054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_2
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 48
+        width: 27
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65ddd88f1a92a2ce0800000000000000
+      internalID: -1429284156100190890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_3
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 48
+        width: 29
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9a8360f8227ca140800000000000000
+      internalID: 4732282828616862362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_4
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 48
+        width: 29
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 353cae866aef29b30800000000000000
+      internalID: 4292773385515746131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_5
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 48
+        width: 29
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fd28df837ee3bc10800000000000000
+      internalID: 2068258833995148784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_6
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 48
+        width: 29
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d012ce5b47d87ac10800000000000000
+      internalID: 2064774486580535565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_7
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 48
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afe67c10819b10150800000000000000
+      internalID: 5837150104809074426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_8
+      rect:
+        serializedVersion: 2
+        x: 1257
+        y: 70
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bd2e9b7e7c52ae70800000000000000
+      internalID: 9124957493315644849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_9
+      rect:
+        serializedVersion: 2
+        x: 1265
+        y: 48
+        width: 41
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32bbaba60047cb860800000000000000
+      internalID: 7547034620705553187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_10
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 84
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa2b3cb57fe025b40800000000000000
+      internalID: 5427416956494131882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_11
+      rect:
+        serializedVersion: 2
+        x: 1288
+        y: 78
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d454a9c1dc26f170800000000000000
+      internalID: 8211800250099455188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_12
+      rect:
+        serializedVersion: 2
+        x: 1404
+        y: 77
+        width: 17
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0deb42aa4ddd48590800000000000000
+      internalID: -7672763959675142448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_13
+      rect:
+        serializedVersion: 2
+        x: 1413
+        y: 84
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c219e518f80f41610800000000000000
+      internalID: 1591161067510075692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_14
+      rect:
+        serializedVersion: 2
+        x: 1415
+        y: 48
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3ca9b35005c608b0800000000000000
+      internalID: -5186241315675198402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_15
+      rect:
+        serializedVersion: 2
+        x: 1426
+        y: 85
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c4ad6f1c452bf4e0800000000000000
+      internalID: -1946921405032586048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_16
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 80
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d60ebb5550eb8f680800000000000000
+      internalID: -8721011748280475539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_17
+      rect:
+        serializedVersion: 2
+        x: 1443
+        y: 85
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1350c4f38be762dd0800000000000000
+      internalID: -2511180412411443919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_18
+      rect:
+        serializedVersion: 2
+        x: 1443
+        y: 67
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a177ba08646c99ff0800000000000000
+      internalID: -28773916492466406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_19
+      rect:
+        serializedVersion: 2
+        x: 1556
+        y: 77
+        width: 50
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f8e302a3a49f76a0800000000000000
+      internalID: -6449272710852515598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Creatures_Fantasy_Version_1_3_Attack3_2_20
+      rect:
+        serializedVersion: 2
+        x: 1565
+        y: 48
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d6fd381f3324eb80800000000000000
+      internalID: -8366523453850913069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_0: 1643659313886152235
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_1: -8862805855023387054
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_10: 5427416956494131882
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_11: 8211800250099455188
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_12: -7672763959675142448
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_13: 1591161067510075692
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_14: -5186241315675198402
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_15: -1946921405032586048
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_16: -8721011748280475539
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_17: -2511180412411443919
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_18: -28773916492466406
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_19: -6449272710852515598
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_2: -1429284156100190890
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_20: -8366523453850913069
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_3: 4732282828616862362
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_4: 4292773385515746131
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_5: 2068258833995148784
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_6: 2064774486580535565
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_7: 5837150104809074426
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_8: 9124957493315644849
+      Monster_Creatures_Fantasy_Version_1_3_Attack3_2_9: 7547034620705553187
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

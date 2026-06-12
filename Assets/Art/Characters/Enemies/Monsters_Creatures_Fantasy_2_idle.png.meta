@@ -1,0 +1,494 @@
+fileFormatVersion: 2
+guid: 4eb8101669d640d41b7f988e869df54e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7975240947654494047
+    second: Monsters_Creatures_Fantasy_2_idle_0
+  - first:
+      213: -8153171999306101128
+    second: Monsters_Creatures_Fantasy_2_idle_1
+  - first:
+      213: -1973477653904493173
+    second: Monsters_Creatures_Fantasy_2_idle_2
+  - first:
+      213: 8484409677876764163
+    second: Monsters_Creatures_Fantasy_2_idle_3
+  - first:
+      213: -2684960435628909057
+    second: Monsters_Creatures_Fantasy_2_idle_4
+  - first:
+      213: 6081572318519428095
+    second: Monsters_Creatures_Fantasy_2_idle_5
+  - first:
+      213: -4195918890024026678
+    second: Monsters_Creatures_Fantasy_2_idle_6
+  - first:
+      213: 4449201290243615938
+    second: Monsters_Creatures_Fantasy_2_idle_7
+  - first:
+      213: -8955841183356316237
+    second: Monsters_Creatures_Fantasy_2_idle_8
+  - first:
+      213: 8177021308606812618
+    second: Monsters_Creatures_Fantasy_2_idle_9
+  - first:
+      213: 2557143579892590943
+    second: Monsters_Creatures_Fantasy_2_idle_10
+  - first:
+      213: -9088259455879411940
+    second: Monsters_Creatures_Fantasy_2_idle_11
+  - first:
+      213: 6149110514199520027
+    second: Monsters_Creatures_Fantasy_2_idle_12
+  - first:
+      213: 4218856728814408423
+    second: Monsters_Creatures_Fantasy_2_idle_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_0
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 68
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a877ecdc90425190800000000000000
+      internalID: -7975240947654494047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_1
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 68
+        width: 46
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87ec2b4934d1ade80800000000000000
+      internalID: -8153171999306101128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_2
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 68
+        width: 46
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b85f9da978ccc94e0800000000000000
+      internalID: -1973477653904493173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_3
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 68
+        width: 46
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30e1bb256adaeb570800000000000000
+      internalID: 8484409677876764163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_4
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 68
+        width: 46
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffd5c5695ba1dbad0800000000000000
+      internalID: -2684960435628909057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_5
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 68
+        width: 46
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff303395dc5166450800000000000000
+      internalID: 6081572318519428095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_6
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 68
+        width: 46
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acd34cd100a15c5c0800000000000000
+      internalID: -4195918890024026678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_7
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 68
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cc2e27200dbebd30800000000000000
+      internalID: 4449201290243615938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_8
+      rect:
+        serializedVersion: 2
+        x: 1303
+        y: 68
+        width: 46
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b59b31d4e576b380800000000000000
+      internalID: -8955841183356316237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_9
+      rect:
+        serializedVersion: 2
+        x: 1459
+        y: 68
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac11f447e8d9a7170800000000000000
+      internalID: 8177021308606812618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_10
+      rect:
+        serializedVersion: 2
+        x: 1615
+        y: 68
+        width: 46
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f592b2f998ccc7320800000000000000
+      internalID: 2557143579892590943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_11
+      rect:
+        serializedVersion: 2
+        x: 1771
+        y: 68
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1709b13d2400e180800000000000000
+      internalID: -9088259455879411940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_12
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 68
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b136b7bee67065550800000000000000
+      internalID: 6149110514199520027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_idle_13
+      rect:
+        serializedVersion: 2
+        x: 2083
+        y: 68
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e2df37a7d36c8a30800000000000000
+      internalID: 4218856728814408423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monsters_Creatures_Fantasy_2_idle_0: -7975240947654494047
+      Monsters_Creatures_Fantasy_2_idle_1: -8153171999306101128
+      Monsters_Creatures_Fantasy_2_idle_10: 2557143579892590943
+      Monsters_Creatures_Fantasy_2_idle_11: -9088259455879411940
+      Monsters_Creatures_Fantasy_2_idle_12: 6149110514199520027
+      Monsters_Creatures_Fantasy_2_idle_13: 4218856728814408423
+      Monsters_Creatures_Fantasy_2_idle_2: -1973477653904493173
+      Monsters_Creatures_Fantasy_2_idle_3: 8484409677876764163
+      Monsters_Creatures_Fantasy_2_idle_4: -2684960435628909057
+      Monsters_Creatures_Fantasy_2_idle_5: 6081572318519428095
+      Monsters_Creatures_Fantasy_2_idle_6: -4195918890024026678
+      Monsters_Creatures_Fantasy_2_idle_7: 4449201290243615938
+      Monsters_Creatures_Fantasy_2_idle_8: -8955841183356316237
+      Monsters_Creatures_Fantasy_2_idle_9: 8177021308606812618
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

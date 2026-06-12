@@ -1,0 +1,416 @@
+fileFormatVersion: 2
+guid: 23243061e4a72e144aae9a7f7decdcde
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5870041511812009396
+    second: Monsters_Creatures_Fantasy_2_death_2_0
+  - first:
+      213: -657929768761592443
+    second: Monsters_Creatures_Fantasy_2_death_2_1
+  - first:
+      213: 751858351535420896
+    second: Monsters_Creatures_Fantasy_2_death_2_2
+  - first:
+      213: 8531155041739244626
+    second: Monsters_Creatures_Fantasy_2_death_2_3
+  - first:
+      213: 2744553709573392499
+    second: Monsters_Creatures_Fantasy_2_death_2_4
+  - first:
+      213: -6971460042629954892
+    second: Monsters_Creatures_Fantasy_2_death_2_5
+  - first:
+      213: 2290803920169923635
+    second: Monsters_Creatures_Fantasy_2_death_2_6
+  - first:
+      213: 4732546043512314264
+    second: Monsters_Creatures_Fantasy_2_death_2_7
+  - first:
+      213: 1168834515798556411
+    second: Monsters_Creatures_Fantasy_2_death_2_8
+  - first:
+      213: -9179140899567046685
+    second: Monsters_Creatures_Fantasy_2_death_2_9
+  - first:
+      213: 4217169386405465503
+    second: Monsters_Creatures_Fantasy_2_death_2_10
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_0
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 68
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bd0a5877a3967150800000000000000
+      internalID: 5870041511812009396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_1
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 68
+        width: 48
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5857fc57c509ed6f0800000000000000
+      internalID: -657929768761592443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_2
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 68
+        width: 50
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e5fdacef232f6a00800000000000000
+      internalID: 751858351535420896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_3
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 68
+        width: 54
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25486aa7f40c46670800000000000000
+      internalID: 8531155041739244626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_4
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 68
+        width: 58
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3784a1ebe0d961620800000000000000
+      internalID: 2744553709573392499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_5
+      rect:
+        serializedVersion: 2
+        x: 827
+        y: 68
+        width: 62
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b246311706604f90800000000000000
+      internalID: -6971460042629954892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_6
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 68
+        width: 62
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 334fcc737029acf10800000000000000
+      internalID: 2290803920169923635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_7
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 68
+        width: 72
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8995bbe6d816da140800000000000000
+      internalID: 4732546043512314264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_8
+      rect:
+        serializedVersion: 2
+        x: 1291
+        y: 68
+        width: 72
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfe7363acc8883010800000000000000
+      internalID: 1168834515798556411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_9
+      rect:
+        serializedVersion: 2
+        x: 1447
+        y: 68
+        width: 72
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3efeb0a2cf32d9080800000000000000
+      internalID: -9179140899567046685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monsters_Creatures_Fantasy_2_death_2_10
+      rect:
+        serializedVersion: 2
+        x: 1603
+        y: 68
+        width: 72
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9d8952a635668a30800000000000000
+      internalID: 4217169386405465503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monsters_Creatures_Fantasy_2_death_2_0: 5870041511812009396
+      Monsters_Creatures_Fantasy_2_death_2_1: -657929768761592443
+      Monsters_Creatures_Fantasy_2_death_2_10: 4217169386405465503
+      Monsters_Creatures_Fantasy_2_death_2_2: 751858351535420896
+      Monsters_Creatures_Fantasy_2_death_2_3: 8531155041739244626
+      Monsters_Creatures_Fantasy_2_death_2_4: 2744553709573392499
+      Monsters_Creatures_Fantasy_2_death_2_5: -6971460042629954892
+      Monsters_Creatures_Fantasy_2_death_2_6: 2290803920169923635
+      Monsters_Creatures_Fantasy_2_death_2_7: 4732546043512314264
+      Monsters_Creatures_Fantasy_2_death_2_8: 1168834515798556411
+      Monsters_Creatures_Fantasy_2_death_2_9: -9179140899567046685
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
