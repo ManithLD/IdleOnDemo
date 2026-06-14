@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: 78263afa6902c374bbdea3c43fbe1e35
+guid: 6b5f6a09ee0c0c14884c32fb13d00b0d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2962630861922417322
-    second: platform-long_0
+      213: -3699640921996313967
+    second: Dying_KG_1_0
+  - first:
+      213: 800936601756474647
+    second: Dying_KG_1_1
+  - first:
+      213: 329537760630217049
+    second: Dying_KG_1_2
+  - first:
+      213: -8502117516598202343
+    second: Dying_KG_1_3
+  - first:
+      213: 3185487368415945839
+    second: Dying_KG_1_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +63,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: platform-long_0
+      name: Dying_KG_1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 28
         y: 0
-        width: 32
-        height: 16
+        width: 38
+        height: 61
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +140,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aaabe7d72116d1920800000000000000
-      internalID: 2962630861922417322
+      spriteID: 19a39e7de2c38acc0800000000000000
+      internalID: -3699640921996313967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dying_KG_1_1
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 0
+        width: 59
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71d9d43889f7d1b00800000000000000
+      internalID: 800936601756474647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dying_KG_1_2
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 0
+        width: 64
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 959117ae8d0c29400800000000000000
+      internalID: 329537760630217049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dying_KG_1_3
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 0
+        width: 65
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 910b9803a29620a80800000000000000
+      internalID: -8502117516598202343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dying_KG_1_4
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 0
+        width: 67
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f642de652ef153c20800000000000000
+      internalID: 3185487368415945839
       vertices: []
       indices: 
       edges: []
@@ -148,7 +248,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      platform-long_0: 2962630861922417322
+      Dying_KG_1_0: -3699640921996313967
+      Dying_KG_1_1: 800936601756474647
+      Dying_KG_1_2: 329537760630217049
+      Dying_KG_1_3: -8502117516598202343
+      Dying_KG_1_4: 3185487368415945839
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

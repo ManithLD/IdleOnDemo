@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 78263afa6902c374bbdea3c43fbe1e35
+guid: 27703232dd76a174896611fba9a217a1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2962630861922417322
-    second: platform-long_0
+      213: 7813407836489069245
+    second: Grab_idle_KG_1_0
+  - first:
+      213: -3392559597179795664
+    second: Grab_idle_KG_1_1
+  - first:
+      213: -1205718562635114744
+    second: Grab_idle_KG_1_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: platform-long_0
+      name: Grab_idle_KG_1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 16
+        x: 32
+        y: 6
+        width: 36
+        height: 58
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aaabe7d72116d1920800000000000000
-      internalID: 2962630861922417322
+      spriteID: db23f23b70dce6c60800000000000000
+      internalID: 7813407836489069245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grab_idle_KG_1_1
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 6
+        width: 37
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03781ca55053be0d0800000000000000
+      internalID: -3392559597179795664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grab_idle_KG_1_2
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 6
+        width: 37
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8071a0ffa5d644fe0800000000000000
+      internalID: -1205718562635114744
       vertices: []
       indices: 
       edges: []
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      platform-long_0: 2962630861922417322
+      Grab_idle_KG_1_0: 7813407836489069245
+      Grab_idle_KG_1_1: -3392559597179795664
+      Grab_idle_KG_1_2: -1205718562635114744
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

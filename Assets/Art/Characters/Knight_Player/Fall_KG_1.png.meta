@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 78263afa6902c374bbdea3c43fbe1e35
+guid: 3b783dd003e654a40a9ffb842e70cd54
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2962630861922417322
-    second: platform-long_0
+      213: -8572224160831420631
+    second: Fall_KG_1_0
+  - first:
+      213: 1175899663943396705
+    second: Fall_KG_1_1
+  - first:
+      213: 6242596449999398337
+    second: Fall_KG_1_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: platform-long_0
+      name: Fall_KG_1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 33
+        y: 4
         width: 32
-        height: 16
+        height: 54
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aaabe7d72116d1920800000000000000
-      internalID: 2962630861922417322
+      spriteID: 9274f961b87590980800000000000000
+      internalID: -8572224160831420631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fall_KG_1_1
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 5
+        width: 33
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16de8d0a382a15010800000000000000
+      internalID: 1175899663943396705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fall_KG_1_2
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 5
+        width: 31
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c52456856822a650800000000000000
+      internalID: 6242596449999398337
       vertices: []
       indices: 
       edges: []
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      platform-long_0: 2962630861922417322
+      Fall_KG_1_0: -8572224160831420631
+      Fall_KG_1_1: 1175899663943396705
+      Fall_KG_1_2: 6242596449999398337
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
