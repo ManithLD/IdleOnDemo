@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 namespace IdleOnDemo.Gameplay.Enemies
 {
     /// <summary>
-    /// Controls enemy health and platform-local patrol behavior.
+    /// Controls enemy health, death cleanup, animation state, and platform-local patrol behavior.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D), typeof(Animator))]
     public class EnemyController : MonoBehaviour, IDamageable
@@ -14,6 +14,9 @@ namespace IdleOnDemo.Gameplay.Enemies
         private const float PatrolWaitDuration = 5f;
         private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
 
+        /// <summary>
+        /// Represents the enemy finite state machine used for platform patrol and death.
+        /// </summary>
         private enum EnemyState
         {
             PatrolWait,
@@ -22,7 +25,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         }
 
         [Header("Stats")]
-        [SerializeField] private int maxHealth = 10;
+        [SerializeField] private int maxHealth = 100;
 
         [Header("Patrol")]
         [SerializeField] private float moveSpeed = 2f;
@@ -51,16 +54,37 @@ namespace IdleOnDemo.Gameplay.Enemies
         private float waitTimer;
         private int currentHealth;
 
+        /// <summary>
+        /// Gets the enemy's current health value.
+        /// </summary>
+        /// <value>The remaining health after damage has been applied.</value>
         public int CurrentHealth => currentHealth;
 
+        /// <summary>
+        /// Gets the enemy's maximum health value.
+        /// </summary>
+        /// <value>The health value assigned when the enemy initializes.</value>
         public int MaxHealth => maxHealth;
 
+        /// <summary>
+        /// Gets whether the enemy has entered the dead state.
+        /// </summary>
+        /// <value><c>true</c> after lethal damage is received.</value>
         public bool IsDead => currentState == EnemyState.Dead;
 
+        /// <summary>
+        /// Raised whenever the enemy health total changes.
+        /// </summary>
         public event Action<int, int> OnHealthChanged;
 
+        /// <summary>
+        /// Raised when the enemy transitions into the dead state.
+        /// </summary>
         public event Action OnDeath;
 
+        /// <summary>
+        /// Caches physics, animation, and health state required for patrol and combat.
+        /// </summary>
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -73,6 +97,9 @@ namespace IdleOnDemo.Gameplay.Enemies
             groundFilter.SetLayerMask(groundLayer);
         }
 
+        /// <summary>
+        /// Advances the patrol finite state machine using physics-timestep movement.
+        /// </summary>
         private void FixedUpdate()
         {
             if (IsDead)
@@ -92,6 +119,12 @@ namespace IdleOnDemo.Gameplay.Enemies
             }
         }
 
+        /// <summary>
+        /// Applies incoming damage, raises health events, and destroys the enemy on lethal damage.
+        /// </summary>
+        /// <param name="amount">The damage amount to subtract from current health.</param>
+        /// <param name="knockbackDirection">The direction to apply optional knockback.</param>
+        /// <param name="knockbackForce">The optional impulse force applied when the enemy survives.</param>
         public void TakeDamage(int amount, Vector2 knockbackDirection, float knockbackForce)
         {
             if (IsDead || amount <= 0)
@@ -114,6 +147,10 @@ namespace IdleOnDemo.Gameplay.Enemies
             }
         }
 
+        /// <summary>
+        /// Waits on the current platform, then picks a random platform-local destination.
+        /// </summary>
+        /// <param name="isGrounded">Whether the enemy is currently standing on valid ground.</param>
         private void TickPatrolWait(bool isGrounded)
         {
             SetHorizontalVelocity(0f);
@@ -142,6 +179,10 @@ namespace IdleOnDemo.Gameplay.Enemies
             waitTimer = 0f;
         }
 
+        /// <summary>
+        /// Moves toward the selected platform-local destination while checking edges and walls.
+        /// </summary>
+        /// <param name="isGrounded">Whether the enemy is currently standing on valid ground.</param>
         private void TickPatrolMove(bool isGrounded)
         {
             if (!isGrounded || !HasUsablePlatformBounds())
@@ -169,6 +210,10 @@ namespace IdleOnDemo.Gameplay.Enemies
             SetMoving(true);
         }
 
+        /// <summary>
+        /// Detects the current platform and caches its walkable X bounds.
+        /// </summary>
+        /// <returns><c>true</c> when the enemy is grounded on a valid platform collider.</returns>
         private bool TryUpdateCurrentPlatform()
         {
             if (!TryGetGroundHit(out RaycastHit2D groundHit))
@@ -189,6 +234,11 @@ namespace IdleOnDemo.Gameplay.Enemies
             return true;
         }
 
+        /// <summary>
+        /// Casts downward from the capsule to find a ground contact with a usable normal.
+        /// </summary>
+        /// <param name="groundHit">The best ground hit when one is found.</param>
+        /// <returns><c>true</c> when ground is detected beneath the enemy.</returns>
         private bool TryGetGroundHit(out RaycastHit2D groundHit)
         {
             groundHit = default;
@@ -205,6 +255,10 @@ namespace IdleOnDemo.Gameplay.Enemies
             return false;
         }
 
+        /// <summary>
+        /// Caches platform bounds from either the collider bounds or a contiguous Tilemap tile run.
+        /// </summary>
+        /// <param name="groundHit">The ground hit used to identify the current platform.</param>
         private void CachePlatformBounds(RaycastHit2D groundHit)
         {
             Bounds platformBounds = groundHit.collider.bounds;
@@ -219,6 +273,13 @@ namespace IdleOnDemo.Gameplay.Enemies
             platformMaxX = platformBounds.max.x - halfWidth;
         }
 
+        /// <summary>
+        /// Calculates the contiguous horizontal tile run beneath the enemy on a Tilemap.
+        /// </summary>
+        /// <param name="tilemap">The tilemap containing the platform tiles.</param>
+        /// <param name="hitPoint">The world-space contact point on the tilemap.</param>
+        /// <param name="bounds">The calculated world-space bounds of the contiguous tile run.</param>
+        /// <returns><c>true</c> when a tile run could be resolved from the hit point.</returns>
         private bool TryGetTileRunBounds(Tilemap tilemap, Vector2 hitPoint, out Bounds bounds)
         {
             Vector3Int cell = tilemap.WorldToCell(hitPoint + Vector2.down * 0.05f);
@@ -261,11 +322,20 @@ namespace IdleOnDemo.Gameplay.Enemies
             return true;
         }
 
+        /// <summary>
+        /// Checks whether the cached platform bounds can support patrol movement.
+        /// </summary>
+        /// <returns><c>true</c> when the platform has a positive walkable width.</returns>
         private bool HasUsablePlatformBounds()
         {
             return platformMaxX > platformMinX;
         }
 
+        /// <summary>
+        /// Checks for ground just ahead of the enemy to avoid walking off platform edges.
+        /// </summary>
+        /// <param name="direction">The horizontal movement direction being tested.</param>
+        /// <returns><c>true</c> when ground is detected in front of the enemy.</returns>
         private bool HasGroundAhead(float direction)
         {
             Bounds bounds = capsuleCollider.bounds;
@@ -277,6 +347,11 @@ namespace IdleOnDemo.Gameplay.Enemies
             return hit.collider != null && hit.normal.y >= minGroundNormalY;
         }
 
+        /// <summary>
+        /// Checks whether a wall blocks movement in the desired patrol direction.
+        /// </summary>
+        /// <param name="direction">The horizontal movement direction being tested.</param>
+        /// <returns><c>true</c> when a blocking wall is directly ahead.</returns>
         private bool IsWallAhead(float direction)
         {
             int hitCount = capsuleCollider.Cast(Vector2.right * direction, groundFilter, hitBuffer, wallCheckDistance);
@@ -291,6 +366,9 @@ namespace IdleOnDemo.Gameplay.Enemies
             return false;
         }
 
+        /// <summary>
+        /// Returns the finite state machine to the waiting state and clears movement.
+        /// </summary>
         private void EnterPatrolWait()
         {
             currentState = EnemyState.PatrolWait;
@@ -299,6 +377,10 @@ namespace IdleOnDemo.Gameplay.Enemies
             SetMoving(false);
         }
 
+        /// <summary>
+        /// Sets horizontal Rigidbody2D velocity while preserving vertical velocity.
+        /// </summary>
+        /// <param name="xVelocity">The horizontal velocity to apply.</param>
         private void SetHorizontalVelocity(float xVelocity)
         {
             Vector2 velocity = rb.linearVelocity;
@@ -306,6 +388,10 @@ namespace IdleOnDemo.Gameplay.Enemies
             rb.linearVelocity = velocity;
         }
 
+        /// <summary>
+        /// Flips the sprite to face the active patrol direction.
+        /// </summary>
+        /// <param name="direction">The horizontal direction being faced.</param>
         private void SetFacingDirection(float direction)
         {
             if (spriteRenderer != null && !Mathf.Approximately(direction, 0f))
@@ -314,6 +400,10 @@ namespace IdleOnDemo.Gameplay.Enemies
             }
         }
 
+        /// <summary>
+        /// Updates the enemy Animator movement parameter.
+        /// </summary>
+        /// <param name="isMoving">Whether the patrol state is currently moving.</param>
         private void SetMoving(bool isMoving)
         {
             if (animator != null)
@@ -322,24 +412,21 @@ namespace IdleOnDemo.Gameplay.Enemies
             }
         }
 
+        /// <summary>
+        /// Marks the enemy dead, notifies listeners, and removes the enemy object from the scene.
+        /// </summary>
         private void Die()
         {
             currentState = EnemyState.Dead;
             SetMoving(false);
             OnDeath?.Invoke();
 
-            if (capsuleCollider != null)
-            {
-                capsuleCollider.enabled = false;
-            }
-
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
-                rb.simulated = false;
-            }
+            Destroy(gameObject);
         }
 
+        /// <summary>
+        /// Keeps serialized patrol and combat tuning values in valid ranges.
+        /// </summary>
         private void OnValidate()
         {
             maxHealth = Mathf.Max(1, maxHealth);

@@ -5,16 +5,23 @@ using IdleOnDemo.Gameplay.Enemies;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Coordinates player attacks, including manual mouse-directed attacks and optional auto-attack steering.
+/// </summary>
 [RequireComponent(typeof(PlayerController))]
 public class PlayerCombat : MonoBehaviour
 {
     private static readonly int AttackHash = Animator.StringToHash("Attack");
 
+    /// <summary>
+    /// Controls whether the player automatically approaches and attacks the nearest enemy.
+    /// </summary>
+    /// <value><c>true</c> to use auto attack; <c>false</c> to require manual left-click attacks.</value>
     public bool autoAttackEnabled = false;
 
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float attackCooldown = 0.5f;
-    [SerializeField] private int attackDamage = 3;
+    [SerializeField] private int attackDamage = 25;
     [SerializeField] private LayerMask attackLayerMask;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Animator animator;
@@ -23,6 +30,9 @@ public class PlayerCombat : MonoBehaviour
     private Coroutine activeAttackRoutine;
     private float nextAttackTime;
 
+    /// <summary>
+    /// Caches required player references and initializes the default attack target layer.
+    /// </summary>
     private void Awake()
     {
         playerController ??= GetComponent<PlayerController>();
@@ -34,6 +44,9 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Releases simulated movement and attack state if combat is disabled mid-sequence.
+    /// </summary>
     private void OnDisable()
     {
         if (playerController != null)
@@ -45,6 +58,9 @@ public class PlayerCombat : MonoBehaviour
         activeAttackRoutine = null;
     }
 
+    /// <summary>
+    /// Routes combat behavior between auto attack and manual attack while respecting grounded and attack-lock constraints.
+    /// </summary>
     private void Update()
     {
         if (playerController == null)
@@ -67,6 +83,9 @@ public class PlayerCombat : MonoBehaviour
         UpdateManualAttack();
     }
 
+    /// <summary>
+    /// Finds the nearest live enemy, moves toward it, and starts an attack when in range.
+    /// </summary>
     private void UpdateAutoAttack()
     {
         EnemyController target = FindNearestLivingEnemy();
@@ -94,6 +113,9 @@ public class PlayerCombat : MonoBehaviour
         TryStartAttack(direction);
     }
 
+    /// <summary>
+    /// Handles left-click manual attacks and snaps the player to face the mouse before attacking.
+    /// </summary>
     private void UpdateManualAttack()
     {
         playerController.SetSimulatedInput(0f);
@@ -103,9 +125,15 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        TryStartAttack(playerController.FacingDirection);
+        float attackDirection = GetManualAttackDirection();
+        playerController.FaceDirection(attackDirection);
+        TryStartAttack(attackDirection);
     }
 
+    /// <summary>
+    /// Starts the attack coroutine if cooldown, grounded state, and current attack state allow it.
+    /// </summary>
+    /// <param name="direction">The horizontal attack direction, where negative is left and positive is right.</param>
     private void TryStartAttack(float direction)
     {
         if (activeAttackRoutine != null || Time.time < nextAttackTime)
@@ -123,6 +151,11 @@ public class PlayerCombat : MonoBehaviour
         activeAttackRoutine = StartCoroutine(AttackRoutine(direction));
     }
 
+    /// <summary>
+    /// Locks movement, triggers the attack animation, applies damage, and releases the player after cooldown.
+    /// </summary>
+    /// <param name="direction">The horizontal direction used for facing and hit filtering.</param>
+    /// <returns>An IEnumerator used by Unity's coroutine scheduler.</returns>
     private IEnumerator AttackRoutine(float direction)
     {
         playerController.SetSimulatedInput(0f);
@@ -143,6 +176,10 @@ public class PlayerCombat : MonoBehaviour
         activeAttackRoutine = null;
     }
 
+    /// <summary>
+    /// Finds the nearest non-dead enemy in the active scene.
+    /// </summary>
+    /// <returns>The closest living <see cref="EnemyController"/>, or <c>null</c> if none exist.</returns>
     private EnemyController FindNearestLivingEnemy()
     {
         EnemyController nearestEnemy = null;
@@ -169,6 +206,37 @@ public class PlayerCombat : MonoBehaviour
         return nearestEnemy;
     }
 
+    /// <summary>
+    /// Resolves manual attack direction from the mouse position in world space.
+    /// </summary>
+    /// <returns><c>1</c> when the mouse is right of the player, <c>-1</c> when left, or the current facing if no camera exists.</returns>
+    private float GetManualAttackDirection()
+    {
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null || Mouse.current == null)
+        {
+            return playerController.FacingDirection;
+        }
+
+        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+        Vector3 screenPoint = new Vector3(
+            mouseScreenPosition.x,
+            mouseScreenPosition.y,
+            Mathf.Abs(mainCamera.transform.position.z - transform.position.z));
+        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(screenPoint);
+
+        if (Mathf.Approximately(mouseWorldPosition.x, transform.position.x))
+        {
+            return playerController.FacingDirection;
+        }
+
+        return mouseWorldPosition.x > transform.position.x ? 1f : -1f;
+    }
+
+    /// <summary>
+    /// Finds and damages the nearest damageable target in front of the player.
+    /// </summary>
+    /// <param name="direction">The horizontal facing direction used to filter targets.</param>
     private void TryDamageTarget(float direction)
     {
         Vector2 origin = transform.position;
@@ -214,6 +282,9 @@ public class PlayerCombat : MonoBehaviour
         target?.TakeDamage(attackDamage, Vector2.right * direction, 0f);
     }
 
+    /// <summary>
+    /// Keeps serialized combat tuning values in valid ranges when edited in the Inspector.
+    /// </summary>
     private void OnValidate()
     {
         attackRange = Mathf.Max(0.1f, attackRange);
@@ -221,6 +292,9 @@ public class PlayerCombat : MonoBehaviour
         attackDamage = Mathf.Max(1, attackDamage);
     }
 
+    /// <summary>
+    /// Draws the configured attack range for scene tuning.
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

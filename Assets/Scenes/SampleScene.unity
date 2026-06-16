@@ -2440,7 +2440,7 @@ MonoBehaviour:
   autoAttackEnabled: 0
   attackRange: 1.5
   attackCooldown: 0.5
-  attackDamage: 3
+  attackDamage: 25
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 256

@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5915aeccafbf044b09d5bc0c975cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Enemies.EnemyController
-  maxHealth: 10
+  maxHealth: 100
   moveSpeed: 2
   targetReachedDistance: 0.08
   groundCheckDistance: 0.12

@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Handles player locomotion, jump input, grounded checks, facing direction, and movement locks used by combat.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
@@ -42,12 +45,27 @@ public class PlayerController : MonoBehaviour
     private bool hasSimulatedInput;
     private bool hasJumpedSinceGrounded;
 
+    /// <summary>
+    /// Gets or sets whether combat is currently locking player movement and jump input.
+    /// </summary>
+    /// <value><c>true</c> while an attack sequence is active and locomotion should be halted.</value>
     public bool IsAttacking { get; set; }
 
+    /// <summary>
+    /// Gets whether the player is currently touching a valid ground surface.
+    /// </summary>
+    /// <value><c>true</c> when the feet cast detects the configured ground layer.</value>
     public bool IsGrounded => isGrounded;
 
+    /// <summary>
+    /// Gets the player's current horizontal facing direction.
+    /// </summary>
+    /// <value><c>1</c> when facing right and <c>-1</c> when facing left.</value>
     public int FacingDirection { get; private set; } = 1;
 
+    /// <summary>
+    /// Caches component references, configures collision filtering, and locates Input System actions.
+    /// </summary>
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -66,18 +84,27 @@ public class PlayerController : MonoBehaviour
         InitializeInputActions();
     }
 
+    /// <summary>
+    /// Enables cached movement and jump actions when the controller becomes active.
+    /// </summary>
     private void OnEnable()
     {
         moveAction?.Enable();
         jumpAction?.Enable();
     }
 
+    /// <summary>
+    /// Disables cached movement and jump actions when the controller becomes inactive.
+    /// </summary>
     private void OnDisable()
     {
         moveAction?.Disable();
         jumpAction?.Disable();
     }
 
+    /// <summary>
+    /// Reads frame-based input and updates visual state unless combat has locked movement.
+    /// </summary>
     private void Update()
     {
         if (IsAttacking)
@@ -91,6 +118,9 @@ public class PlayerController : MonoBehaviour
         UpdateAnimation();
     }
 
+    /// <summary>
+    /// Applies physics movement, grounded state, coyote-time jumps, and attack movement locks.
+    /// </summary>
     private void FixedUpdate()
     {
         isGrounded = CheckGrounded();
@@ -130,7 +160,9 @@ public class PlayerController : MonoBehaviour
         jumpQueued = false;
     }
 
-    // Input Handling
+    /// <summary>
+    /// Finds the configured Input System actions used by player movement and jumping.
+    /// </summary>
     private void InitializeInputActions()
     {
         InputActionAsset actions = InputSystem.actions;
@@ -140,6 +172,10 @@ public class PlayerController : MonoBehaviour
         jumpAction = actions.FindAction("Player/Jump", false);
     }
 
+    /// <summary>
+    /// Overrides player horizontal movement for external systems such as auto attack steering.
+    /// </summary>
+    /// <param name="horizontal">The desired horizontal input in the range -1 to 1. Pass 0 to release control.</param>
     public void SetSimulatedInput(float horizontal)
     {
         simulatedHorizontalInput = Mathf.Clamp(horizontal, -1f, 1f);
@@ -151,11 +187,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Forces the player to face a direction without applying movement.
+    /// </summary>
+    /// <param name="horizontal">A negative value faces left; a positive value faces right; zero keeps the current facing.</param>
     public void FaceDirection(float horizontal)
     {
         SetFacingDirection(horizontal);
     }
 
+    /// <summary>
+    /// Reads player movement and jump input from the Input System with keyboard fallback.
+    /// </summary>
     private void ReadInput()
     {
         float requestedHorizontalInput = 0f;
@@ -189,7 +232,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Physics Checks
+    /// <summary>
+    /// Checks whether the player's capsule is touching a valid ground surface.
+    /// </summary>
+    /// <returns><c>true</c> when a downward capsule cast hits ground with an upward-enough normal.</returns>
     private bool CheckGrounded()
     {
         int hitCount = capsuleCollider.Cast(Vector2.down, groundFilter, hitBuffer, groundCheckDistance);
@@ -200,6 +246,11 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Checks whether the player is pressing into a wall on the configured ground layer.
+    /// </summary>
+    /// <param name="moveDirection">The requested horizontal movement direction.</param>
+    /// <returns><c>true</c> when a side capsule cast detects a blocking wall.</returns>
     private bool IsBlockedInMoveDirection(float moveDirection)
     {
         if (Mathf.Approximately(moveDirection, 0f)) return false;
@@ -214,12 +265,18 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    // Visuals
+    /// <summary>
+    /// Updates the player sprite orientation from the current horizontal input.
+    /// </summary>
     private void UpdateFacingDirection()
     {
         SetFacingDirection(horizontalInput);
     }
 
+    /// <summary>
+    /// Applies the visual facing direction and stores it for combat hit direction.
+    /// </summary>
+    /// <param name="horizontal">A negative value faces left; a positive value faces right; zero is ignored.</param>
     private void SetFacingDirection(float horizontal)
     {
         if (Mathf.Approximately(horizontal, 0f))
@@ -235,6 +292,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sends grounded movement and jump state to the Animator.
+    /// </summary>
     private void UpdateAnimation()
     {
         if (animator == null) return;
@@ -246,6 +306,9 @@ public class PlayerController : MonoBehaviour
         animator.SetBool(IsJumpingHash, isJumping);
     }
 
+    /// <summary>
+    /// Stops horizontal motion and clears jump input while an attack sequence is active.
+    /// </summary>
     private void ApplyAttackLock()
     {
         horizontalInput = 0f;
@@ -259,6 +322,10 @@ public class PlayerController : MonoBehaviour
         animator.SetBool(IsJumpingHash, false);
     }
 
+    /// <summary>
+    /// Sets the Rigidbody2D horizontal velocity while preserving vertical velocity.
+    /// </summary>
+    /// <param name="xVelocity">The horizontal velocity to apply.</param>
     private void SetHorizontalVelocity(float xVelocity)
     {
         if (rb == null) return;
@@ -268,6 +335,9 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = velocity;
     }
 
+    /// <summary>
+    /// Draws local ground and wall check rays for scene debugging.
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         CapsuleCollider2D editorCollider = GetComponent<CapsuleCollider2D>();

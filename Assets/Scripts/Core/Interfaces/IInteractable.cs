@@ -10,6 +10,7 @@ namespace IdleOnDemo.Core.Interfaces
         /// <summary>
         /// Gets a value indicating whether the object is currently available for interaction.
         /// </summary>
+        /// <value><c>true</c> when an interactor may call <see cref="Interact"/>.</value>
         bool CanInteract { get; }
 
         /// <summary>
