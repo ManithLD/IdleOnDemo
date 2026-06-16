@@ -13,6 +13,7 @@ namespace IdleOnDemo.Gameplay.Enemies
     {
         private const float PatrolWaitDuration = 5f;
         private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
+        private static readonly int DieHash = Animator.StringToHash("die");
 
         /// <summary>
         /// Represents the enemy finite state machine used for platform patrol and death.
@@ -37,6 +38,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         [SerializeField] private float platformEdgePadding = 0.05f;
         [SerializeField] private float minGroundNormalY = 0.65f;
         [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private float deathAnimationDuration = 1f;
 
         [Header("References")]
         [SerializeField] private Animator animator;
@@ -394,10 +396,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         /// <param name="direction">The horizontal direction being faced.</param>
         private void SetFacingDirection(float direction)
         {
-            if (spriteRenderer != null && !Mathf.Approximately(direction, 0f))
-            {
-                spriteRenderer.flipX = direction < 0f;
-            }
+            if (spriteRenderer != null && !Mathf.Approximately(direction, 0f)) spriteRenderer.flipX = direction < 0f;
         }
 
         /// <summary>
@@ -406,10 +405,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         /// <param name="isMoving">Whether the patrol state is currently moving.</param>
         private void SetMoving(bool isMoving)
         {
-            if (animator != null)
-            {
-                animator.SetBool(IsMovingHash, isMoving);
-            }
+            if (animator != null) animator.SetBool(IsMovingHash, isMoving);
         }
 
         /// <summary>
@@ -419,8 +415,41 @@ namespace IdleOnDemo.Gameplay.Enemies
         {
             currentState = EnemyState.Dead;
             SetMoving(false);
+            FreezeDeathPhysics();
+
+            if (animator != null)
+            {
+                animator.SetTrigger(DieHash);
+            }
+
             OnDeath?.Invoke();
 
+            StartCoroutine(DestroyAfterDeathAnimation());
+        }
+
+        /// <summary>
+        /// Stops all Rigidbody2D simulation so the death animation plays in place instead of falling through platforms.
+        /// </summary>
+        private void FreezeDeathPhysics()
+        {
+            if (rb == null)
+            {
+                return;
+            }
+
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.gravityScale = 0f;
+            rb.simulated = false;
+        }
+
+        /// <summary>
+        /// Delays enemy cleanup long enough for the death animation to finish playing.
+        /// </summary>
+        /// <returns>An IEnumerator used by Unity's coroutine scheduler.</returns>
+        private System.Collections.IEnumerator DestroyAfterDeathAnimation()
+        {
+            yield return new WaitForSeconds(deathAnimationDuration);
             Destroy(gameObject);
         }
 
