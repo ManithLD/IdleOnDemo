@@ -518,15 +518,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 525100383769064423, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_Name
-      value: FrogEnemy_Instance_2
+      value: SlimeEnemy_Instance_1
       objectReference: {fileID: 0}
     - target: {fileID: 8810483511828685665, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: 5.4
       objectReference: {fileID: 0}
     - target: {fileID: 8810483511828685665, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.885
+      value: -1.63
       objectReference: {fileID: 0}
     - target: {fileID: 8810483511828685665, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_LocalPosition.z
@@ -704,15 +704,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 525100383769064423, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_Name
-      value: FrogEnemy_Instance_1
+      value: SlimeEnemy_Instance_2
       objectReference: {fileID: 0}
     - target: {fileID: 8810483511828685665, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5
+      value: -1.48
       objectReference: {fileID: 0}
     - target: {fileID: 8810483511828685665, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.885
+      value: -1.62
       objectReference: {fileID: 0}
     - target: {fileID: 8810483511828685665, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2412,7 +2412,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4057652279525399919, guid: 8638f1e6a2c37cb43b5722819e8ae284, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
