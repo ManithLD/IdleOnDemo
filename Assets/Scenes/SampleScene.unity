@@ -2231,6 +2231,7 @@ GameObject:
   - component: {fileID: 1170070130}
   - component: {fileID: 1170070132}
   - component: {fileID: 1170070131}
+  - component: {fileID: 1170070133}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -2424,6 +2425,27 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1170070133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170070125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ad5e0bb73cc8247a5280f8f80a6185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  autoAttackEnabled: 0
+  attackRange: 1.5
+  attackCooldown: 0.5
+  attackDamage: 3
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  playerController: {fileID: 1170070130}
+  animator: {fileID: 1170070131}
 --- !u!1 &1199239220
 GameObject:
   m_ObjectHideFlags: 0

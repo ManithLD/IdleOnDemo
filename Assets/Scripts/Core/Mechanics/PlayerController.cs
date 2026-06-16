@@ -33,12 +33,20 @@ public class PlayerController : MonoBehaviour
     private InputAction jumpAction;
 
     private float horizontalInput;
+    private float simulatedHorizontalInput;
     private float lastGroundedTime = float.NegativeInfinity;
 
     private bool jumpQueued;
     private bool stopJump;
     private bool isGrounded;
+    private bool hasSimulatedInput;
     private bool hasJumpedSinceGrounded;
+
+    public bool IsAttacking { get; set; }
+
+    public bool IsGrounded => isGrounded;
+
+    public int FacingDirection { get; private set; } = 1;
 
     private void Awake()
     {
@@ -72,6 +80,12 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (IsAttacking)
+        {
+            ApplyAttackLock();
+            return;
+        }
+
         ReadInput();
         UpdateFacingDirection();
         UpdateAnimation();
@@ -85,6 +99,12 @@ public class PlayerController : MonoBehaviour
         {
             lastGroundedTime = Time.time;
             hasJumpedSinceGrounded = false;
+        }
+
+        if (IsAttacking)
+        {
+            ApplyAttackLock();
+            return;
         }
 
         // Only allow movement if grounded or not running into a wall in the air
@@ -120,19 +140,39 @@ public class PlayerController : MonoBehaviour
         jumpAction = actions.FindAction("Player/Jump", false);
     }
 
+    public void SetSimulatedInput(float horizontal)
+    {
+        simulatedHorizontalInput = Mathf.Clamp(horizontal, -1f, 1f);
+        hasSimulatedInput = !Mathf.Approximately(simulatedHorizontalInput, 0f);
+
+        if (hasSimulatedInput)
+        {
+            SetFacingDirection(simulatedHorizontalInput);
+        }
+    }
+
+    public void FaceDirection(float horizontal)
+    {
+        SetFacingDirection(horizontal);
+    }
+
     private void ReadInput()
     {
+        float requestedHorizontalInput = 0f;
+
         // Horizontal Input
         if (moveAction != null && moveAction.enabled)
         {
-            horizontalInput = Mathf.Clamp(moveAction.ReadValue<Vector2>().x, -1f, 1f);
+            requestedHorizontalInput = Mathf.Clamp(moveAction.ReadValue<Vector2>().x, -1f, 1f);
         }
         else if (Keyboard.current != null)
         {
             Keyboard kb = Keyboard.current;
-            horizontalInput = (kb.dKey.isPressed || kb.rightArrowKey.isPressed ? 1f : 0f) -
-                              (kb.aKey.isPressed || kb.leftArrowKey.isPressed ? 1f : 0f);
+            requestedHorizontalInput = (kb.dKey.isPressed || kb.rightArrowKey.isPressed ? 1f : 0f) -
+                                       (kb.aKey.isPressed || kb.leftArrowKey.isPressed ? 1f : 0f);
         }
+
+        horizontalInput = hasSimulatedInput ? simulatedHorizontalInput : requestedHorizontalInput;
 
         // Jump Input
         if ((jumpAction != null && jumpAction.WasPressedThisFrame()) ||
@@ -177,9 +217,21 @@ public class PlayerController : MonoBehaviour
     // Visuals
     private void UpdateFacingDirection()
     {
-        if (spriteRenderer != null && !Mathf.Approximately(horizontalInput, 0f))
+        SetFacingDirection(horizontalInput);
+    }
+
+    private void SetFacingDirection(float horizontal)
+    {
+        if (Mathf.Approximately(horizontal, 0f))
         {
-            spriteRenderer.flipX = horizontalInput < 0f;
+            return;
+        }
+
+        FacingDirection = horizontal < 0f ? -1 : 1;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = FacingDirection < 0;
         }
     }
 
@@ -192,6 +244,28 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool(IsMovingHash, isMoving);
         animator.SetBool(IsJumpingHash, isJumping);
+    }
+
+    private void ApplyAttackLock()
+    {
+        horizontalInput = 0f;
+        jumpQueued = false;
+        stopJump = false;
+        SetHorizontalVelocity(0f);
+
+        if (animator == null) return;
+
+        animator.SetBool(IsMovingHash, false);
+        animator.SetBool(IsJumpingHash, false);
+    }
+
+    private void SetHorizontalVelocity(float xVelocity)
+    {
+        if (rb == null) return;
+
+        Vector2 velocity = rb.linearVelocity;
+        velocity.x = xVelocity;
+        rb.linearVelocity = velocity;
     }
 
     private void OnDrawGizmosSelected()

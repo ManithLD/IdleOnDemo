@@ -1,0 +1,229 @@
+using System.Collections;
+using System.Collections.Generic;
+using IdleOnDemo.Core.Interfaces;
+using IdleOnDemo.Gameplay.Enemies;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(PlayerController))]
+public class PlayerCombat : MonoBehaviour
+{
+    private static readonly int AttackHash = Animator.StringToHash("Attack");
+
+    public bool autoAttackEnabled = false;
+
+    [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private float attackCooldown = 0.5f;
+    [SerializeField] private int attackDamage = 3;
+    [SerializeField] private LayerMask attackLayerMask;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private Animator animator;
+
+    private readonly List<Collider2D> attackHits = new();
+    private Coroutine activeAttackRoutine;
+    private float nextAttackTime;
+
+    private void Awake()
+    {
+        playerController ??= GetComponent<PlayerController>();
+        animator ??= GetComponentInChildren<Animator>();
+
+        if (attackLayerMask.value == 0)
+        {
+            attackLayerMask = LayerMask.GetMask("Enemy");
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (playerController != null)
+        {
+            playerController.SetSimulatedInput(0f);
+            playerController.IsAttacking = false;
+        }
+
+        activeAttackRoutine = null;
+    }
+
+    private void Update()
+    {
+        if (playerController == null)
+        {
+            return;
+        }
+
+        if (!playerController.IsGrounded || playerController.IsAttacking)
+        {
+            playerController.SetSimulatedInput(0f);
+            return;
+        }
+
+        if (autoAttackEnabled)
+        {
+            UpdateAutoAttack();
+            return;
+        }
+
+        UpdateManualAttack();
+    }
+
+    private void UpdateAutoAttack()
+    {
+        EnemyController target = FindNearestLivingEnemy();
+        if (target == null)
+        {
+            playerController.SetSimulatedInput(0f);
+            return;
+        }
+
+        float distance = Vector2.Distance(transform.position, target.transform.position);
+        float direction = Mathf.Sign(target.transform.position.x - transform.position.x);
+        if (Mathf.Approximately(direction, 0f))
+        {
+            direction = playerController.FacingDirection;
+        }
+
+        if (distance > attackRange)
+        {
+            playerController.SetSimulatedInput(direction);
+            return;
+        }
+
+        playerController.SetSimulatedInput(0f);
+        playerController.FaceDirection(direction);
+        TryStartAttack(direction);
+    }
+
+    private void UpdateManualAttack()
+    {
+        playerController.SetSimulatedInput(0f);
+
+        if (Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            return;
+        }
+
+        TryStartAttack(playerController.FacingDirection);
+    }
+
+    private void TryStartAttack(float direction)
+    {
+        if (activeAttackRoutine != null || Time.time < nextAttackTime)
+        {
+            return;
+        }
+
+        if (!playerController.IsGrounded || playerController.IsAttacking)
+        {
+            return;
+        }
+
+        direction = Mathf.Approximately(direction, 0f) ? playerController.FacingDirection : Mathf.Sign(direction);
+        nextAttackTime = Time.time + attackCooldown;
+        activeAttackRoutine = StartCoroutine(AttackRoutine(direction));
+    }
+
+    private IEnumerator AttackRoutine(float direction)
+    {
+        playerController.SetSimulatedInput(0f);
+        playerController.FaceDirection(direction);
+        playerController.IsAttacking = true;
+
+        if (animator != null)
+        {
+            animator.ResetTrigger(AttackHash);
+            animator.SetTrigger(AttackHash);
+        }
+
+        TryDamageTarget(direction);
+
+        yield return new WaitForSeconds(attackCooldown);
+
+        playerController.IsAttacking = false;
+        activeAttackRoutine = null;
+    }
+
+    private EnemyController FindNearestLivingEnemy()
+    {
+        EnemyController nearestEnemy = null;
+        float nearestDistanceSqr = float.MaxValue;
+        EnemyController[] enemies = Object.FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude);
+
+        foreach (EnemyController enemy in enemies)
+        {
+            if (enemy == null || enemy.IsDead)
+            {
+                continue;
+            }
+
+            float distanceSqr = ((Vector2)enemy.transform.position - (Vector2)transform.position).sqrMagnitude;
+            if (distanceSqr >= nearestDistanceSqr)
+            {
+                continue;
+            }
+
+            nearestDistanceSqr = distanceSqr;
+            nearestEnemy = enemy;
+        }
+
+        return nearestEnemy;
+    }
+
+    private void TryDamageTarget(float direction)
+    {
+        Vector2 origin = transform.position;
+        ContactFilter2D attackFilter = new ContactFilter2D { useTriggers = false };
+        attackFilter.SetLayerMask(attackLayerMask);
+        attackHits.Clear();
+        int hitCount = Physics2D.OverlapCircle(origin, attackRange, attackFilter, attackHits);
+
+        IDamageable target = null;
+        float nearestDistanceSqr = float.MaxValue;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider2D hit = attackHits[i];
+            if (hit == null)
+            {
+                continue;
+            }
+
+            IDamageable damageable = hit.GetComponentInParent<IDamageable>();
+            if (damageable == null || damageable.IsDead)
+            {
+                continue;
+            }
+
+            Vector2 closestPoint = hit.bounds.ClosestPoint(origin);
+            Vector2 toTarget = closestPoint - origin;
+            if (toTarget.x * direction <= 0.01f)
+            {
+                continue;
+            }
+
+            float distanceSqr = toTarget.sqrMagnitude;
+            if (distanceSqr >= nearestDistanceSqr)
+            {
+                continue;
+            }
+
+            nearestDistanceSqr = distanceSqr;
+            target = damageable;
+        }
+
+        target?.TakeDamage(attackDamage, Vector2.right * direction, 0f);
+    }
+
+    private void OnValidate()
+    {
+        attackRange = Mathf.Max(0.1f, attackRange);
+        attackCooldown = Mathf.Max(0.01f, attackCooldown);
+        attackDamage = Mathf.Max(1, attackDamage);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+}
