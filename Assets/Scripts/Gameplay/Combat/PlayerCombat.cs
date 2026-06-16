@@ -21,6 +21,7 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float attackCooldown = 0.5f;
+    [SerializeField] private float closeTargetGraceDistance = 0.25f;
     [SerializeField] private int attackDamage = 25;
     [SerializeField] private LayerMask attackLayerMask;
     [SerializeField] private PlayerController playerController;
@@ -262,14 +263,11 @@ public class PlayerCombat : MonoBehaviour
                 continue;
             }
 
-            Vector2 closestPoint = hit.bounds.ClosestPoint(origin);
-            Vector2 toTarget = closestPoint - origin;
-            if (toTarget.x * direction <= 0.01f)
+            if (!IsValidAttackHit(hit, origin, direction, out float distanceSqr))
             {
                 continue;
             }
 
-            float distanceSqr = toTarget.sqrMagnitude;
             if (distanceSqr >= nearestDistanceSqr)
             {
                 continue;
@@ -283,12 +281,39 @@ public class PlayerCombat : MonoBehaviour
     }
 
     /// <summary>
+    /// Checks whether a target collider is inside the active attack direction, including very close overlap cases.
+    /// </summary>
+    /// <param name="hit">The candidate target collider found by the attack range query.</param>
+    /// <param name="origin">The player world position used as the attack origin.</param>
+    /// <param name="direction">The horizontal attack direction, where negative is left and positive is right.</param>
+    /// <param name="distanceSqr">The squared distance used to choose the nearest valid target.</param>
+    /// <returns><c>true</c> when the collider should be considered a valid attack target.</returns>
+    private bool IsValidAttackHit(Collider2D hit, Vector2 origin, float direction, out float distanceSqr)
+    {
+        Vector2 closestPoint = hit.bounds.ClosestPoint(origin);
+        Vector2 toClosestPoint = closestPoint - origin;
+        bool isCloseOrOverlapping = hit.bounds.Contains(origin) ||
+            toClosestPoint.sqrMagnitude <= closeTargetGraceDistance * closeTargetGraceDistance;
+
+        if (!isCloseOrOverlapping && toClosestPoint.x * direction <= 0.01f)
+        {
+            distanceSqr = float.MaxValue;
+            return false;
+        }
+
+        Vector2 targetCenterOffset = (Vector2)hit.bounds.center - origin;
+        distanceSqr = isCloseOrOverlapping ? targetCenterOffset.sqrMagnitude : toClosestPoint.sqrMagnitude;
+        return true;
+    }
+
+    /// <summary>
     /// Keeps serialized combat tuning values in valid ranges when edited in the Inspector.
     /// </summary>
     private void OnValidate()
     {
         attackRange = Mathf.Max(0.1f, attackRange);
         attackCooldown = Mathf.Max(0.01f, attackCooldown);
+        closeTargetGraceDistance = Mathf.Max(0f, closeTargetGraceDistance);
         attackDamage = Mathf.Max(1, attackDamage);
     }
 
