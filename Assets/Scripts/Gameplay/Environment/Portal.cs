@@ -21,7 +21,9 @@ namespace IdleOnDemo.Gameplay.Environment
         /// </summary>
         private void Update()
         {
-            if (!isPlayerInPortal || Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame)
+            if (!isPlayerInPortal ||
+                Mouse.current == null ||
+                !Mouse.current.leftButton.wasPressedThisFrame)
             {
                 return;
             }
