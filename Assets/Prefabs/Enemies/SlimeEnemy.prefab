@@ -157,8 +157,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.023794055, y: 0.017239993}
-  m_Size: {x: 1.002415, y: 0.7855257}
+  m_Offset: {x: -0.02379405, y: 0.072887436}
+  m_Size: {x: 1.0024153, y: 0.67423517}
   m_Direction: 1
 --- !u!114 &5605697489410681757
 MonoBehaviour:
@@ -175,15 +175,6 @@ MonoBehaviour:
   maxHealth: 100
   moveSpeed: 2
   targetReachedDistance: 0.08
-  groundCheckDistance: 0.12
-  edgeCheckForwardDistance: 0.12
-  edgeCheckDownDistance: 0.35
-  wallCheckDistance: 0.08
-  platformEdgePadding: 0.05
-  minGroundNormalY: 0.65
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
   deathAnimationDuration: 1
   animator: {fileID: 8077627831290952116}
   spriteRenderer: {fileID: 4521223089975076489}
