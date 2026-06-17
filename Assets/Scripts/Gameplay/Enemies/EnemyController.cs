@@ -1,12 +1,12 @@
 using System;
 using IdleOnDemo.Core.Interfaces;
+using IdleOnDemo.Gameplay.Environment;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace IdleOnDemo.Gameplay.Enemies
 {
     /// <summary>
-    /// Controls enemy health, death cleanup, animation state, and platform-local patrol behavior.
+    /// Controls enemy health, death cleanup, animation state, and spawner-zone roaming behavior.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D), typeof(Animator))]
     public class EnemyController : MonoBehaviour, IDamageable
@@ -16,7 +16,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         private static readonly int DieHash = Animator.StringToHash("die");
 
         /// <summary>
-        /// Represents the enemy finite state machine used for platform patrol and death.
+        /// Represents the enemy finite state machine used for bounded roaming and death.
         /// </summary>
         private enum EnemyState
         {
@@ -28,31 +28,19 @@ namespace IdleOnDemo.Gameplay.Enemies
         [Header("Stats")]
         [SerializeField] private int maxHealth = 100;
 
-        [Header("Patrol")]
+        [Header("Roaming")]
         [SerializeField] private float moveSpeed = 2f;
-        [SerializeField] private float targetReachedDistance = 0.08f;
-        [SerializeField] private float groundCheckDistance = 0.12f;
-        [SerializeField] private float edgeCheckForwardDistance = 0.12f;
-        [SerializeField] private float edgeCheckDownDistance = 0.35f;
-        [SerializeField] private float wallCheckDistance = 0.08f;
-        [SerializeField] private float platformEdgePadding = 0.05f;
-        [SerializeField] private float minGroundNormalY = 0.65f;
-        [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private float targetReachedDistance = 0.2f;
         [SerializeField] private float deathAnimationDuration = 1f;
 
         [Header("References")]
         [SerializeField] private Animator animator;
         [SerializeField] private SpriteRenderer spriteRenderer;
 
-        private readonly RaycastHit2D[] hitBuffer = new RaycastHit2D[8];
-        private ContactFilter2D groundFilter;
         private Rigidbody2D rb;
-        private CapsuleCollider2D capsuleCollider;
         private EnemyState currentState = EnemyState.PatrolWait;
-        private Collider2D currentPlatformCollider;
-        private float platformMinX;
-        private float platformMaxX;
-        private float patrolTargetX;
+        private EnemySpawnerZone homeZone;
+        private Vector2 roamTarget;
         private float waitTimer;
         private int currentHealth;
 
@@ -85,22 +73,18 @@ namespace IdleOnDemo.Gameplay.Enemies
         public event Action OnDeath;
 
         /// <summary>
-        /// Caches physics, animation, and health state required for patrol and combat.
+        /// Caches physics, animation, and health state required for roaming and combat.
         /// </summary>
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
-            capsuleCollider = GetComponent<CapsuleCollider2D>();
             animator ??= GetComponent<Animator>();
             spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
             currentHealth = maxHealth;
-
-            groundFilter = new ContactFilter2D { useTriggers = false };
-            groundFilter.SetLayerMask(groundLayer);
         }
 
         /// <summary>
-        /// Advances the patrol finite state machine using physics-timestep movement.
+        /// Advances the roaming finite state machine using physics-timestep movement.
         /// </summary>
         private void FixedUpdate()
         {
@@ -109,20 +93,29 @@ namespace IdleOnDemo.Gameplay.Enemies
                 return;
             }
 
-            bool isGrounded = TryUpdateCurrentPlatform();
             switch (currentState)
             {
                 case EnemyState.PatrolWait:
-                    TickPatrolWait(isGrounded);
+                    TickPatrolWait();
                     break;
                 case EnemyState.PatrolMove:
-                    TickPatrolMove(isGrounded);
+                    TickPatrolMove();
                     break;
             }
         }
 
         /// <summary>
-        /// Applies incoming damage, raises health events, and destroys the enemy on lethal damage.
+        /// Assigns the spawner zone that owns this enemy's roaming range.
+        /// </summary>
+        /// <param name="homeZone">The zone used to pick future roaming target points.</param>
+        public void InitializeSpawnerBounds(EnemySpawnerZone homeZone)
+        {
+            this.homeZone = homeZone;
+            EnterPatrolWait();
+        }
+
+        /// <summary>
+        /// Applies incoming damage, raises health events, and destroys the enemy after its death animation.
         /// </summary>
         /// <param name="amount">The damage amount to subtract from current health.</param>
         /// <param name="knockbackDirection">The direction to apply optional knockback.</param>
@@ -150,15 +143,14 @@ namespace IdleOnDemo.Gameplay.Enemies
         }
 
         /// <summary>
-        /// Waits on the current platform, then picks a random platform-local destination.
+        /// Waits in place before selecting the next random point from the home zone.
         /// </summary>
-        /// <param name="isGrounded">Whether the enemy is currently standing on valid ground.</param>
-        private void TickPatrolWait(bool isGrounded)
+        private void TickPatrolWait()
         {
             SetHorizontalVelocity(0f);
             SetMoving(false);
 
-            if (!isGrounded || !HasUsablePlatformBounds())
+            if (homeZone == null)
             {
                 waitTimer = 0f;
                 return;
@@ -170,30 +162,23 @@ namespace IdleOnDemo.Gameplay.Enemies
                 return;
             }
 
-            patrolTargetX = UnityEngine.Random.Range(platformMinX, platformMaxX);
-            if (Mathf.Abs(patrolTargetX - transform.position.x) <= targetReachedDistance)
-            {
-                waitTimer = 0f;
-                return;
-            }
-
+            roamTarget = homeZone.GetRandomPointInZone();
             currentState = EnemyState.PatrolMove;
             waitTimer = 0f;
         }
 
         /// <summary>
-        /// Moves toward the selected platform-local destination while checking edges and walls.
+        /// Moves horizontally toward the current home-zone target point.
         /// </summary>
-        /// <param name="isGrounded">Whether the enemy is currently standing on valid ground.</param>
-        private void TickPatrolMove(bool isGrounded)
+        private void TickPatrolMove()
         {
-            if (!isGrounded || !HasUsablePlatformBounds())
+            if (homeZone == null)
             {
                 EnterPatrolWait();
                 return;
             }
 
-            float distanceToTarget = patrolTargetX - transform.position.x;
+            float distanceToTarget = roamTarget.x - transform.position.x;
             if (Mathf.Abs(distanceToTarget) <= targetReachedDistance)
             {
                 EnterPatrolWait();
@@ -201,171 +186,9 @@ namespace IdleOnDemo.Gameplay.Enemies
             }
 
             float direction = Mathf.Sign(distanceToTarget);
-            if (!HasGroundAhead(direction) || IsWallAhead(direction))
-            {
-                EnterPatrolWait();
-                return;
-            }
-
             SetHorizontalVelocity(direction * moveSpeed);
             SetFacingDirection(direction);
             SetMoving(true);
-        }
-
-        /// <summary>
-        /// Detects the current platform and caches its walkable X bounds.
-        /// </summary>
-        /// <returns><c>true</c> when the enemy is grounded on a valid platform collider.</returns>
-        private bool TryUpdateCurrentPlatform()
-        {
-            if (!TryGetGroundHit(out RaycastHit2D groundHit))
-            {
-                return false;
-            }
-
-            if (groundHit.collider != currentPlatformCollider)
-            {
-                currentPlatformCollider = groundHit.collider;
-                CachePlatformBounds(groundHit);
-            }
-            else
-            {
-                CachePlatformBounds(groundHit);
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Casts downward from the capsule to find a ground contact with a usable normal.
-        /// </summary>
-        /// <param name="groundHit">The best ground hit when one is found.</param>
-        /// <returns><c>true</c> when ground is detected beneath the enemy.</returns>
-        private bool TryGetGroundHit(out RaycastHit2D groundHit)
-        {
-            groundHit = default;
-            int hitCount = capsuleCollider.Cast(Vector2.down, groundFilter, hitBuffer, groundCheckDistance);
-            for (int i = 0; i < hitCount; i++)
-            {
-                if (hitBuffer[i].normal.y >= minGroundNormalY)
-                {
-                    groundHit = hitBuffer[i];
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Caches platform bounds from either the collider bounds or a contiguous Tilemap tile run.
-        /// </summary>
-        /// <param name="groundHit">The ground hit used to identify the current platform.</param>
-        private void CachePlatformBounds(RaycastHit2D groundHit)
-        {
-            Bounds platformBounds = groundHit.collider.bounds;
-            Tilemap tilemap = groundHit.collider.GetComponent<Tilemap>();
-            if (tilemap != null && TryGetTileRunBounds(tilemap, groundHit.point, out Bounds tileRunBounds))
-            {
-                platformBounds = tileRunBounds;
-            }
-
-            float halfWidth = capsuleCollider.bounds.extents.x + platformEdgePadding;
-            platformMinX = platformBounds.min.x + halfWidth;
-            platformMaxX = platformBounds.max.x - halfWidth;
-        }
-
-        /// <summary>
-        /// Calculates the contiguous horizontal tile run beneath the enemy on a Tilemap.
-        /// </summary>
-        /// <param name="tilemap">The tilemap containing the platform tiles.</param>
-        /// <param name="hitPoint">The world-space contact point on the tilemap.</param>
-        /// <param name="bounds">The calculated world-space bounds of the contiguous tile run.</param>
-        /// <returns><c>true</c> when a tile run could be resolved from the hit point.</returns>
-        private bool TryGetTileRunBounds(Tilemap tilemap, Vector2 hitPoint, out Bounds bounds)
-        {
-            Vector3Int cell = tilemap.WorldToCell(hitPoint + Vector2.down * 0.05f);
-            if (!tilemap.HasTile(cell))
-            {
-                Vector3Int below = new Vector3Int(cell.x, cell.y - 1, cell.z);
-                Vector3Int above = new Vector3Int(cell.x, cell.y + 1, cell.z);
-                if (tilemap.HasTile(below))
-                {
-                    cell = below;
-                }
-                else if (tilemap.HasTile(above))
-                {
-                    cell = above;
-                }
-            }
-
-            if (!tilemap.HasTile(cell))
-            {
-                bounds = default;
-                return false;
-            }
-
-            int left = cell.x;
-            int right = cell.x;
-            while (tilemap.HasTile(new Vector3Int(left - 1, cell.y, cell.z)))
-            {
-                left--;
-            }
-
-            while (tilemap.HasTile(new Vector3Int(right + 1, cell.y, cell.z)))
-            {
-                right++;
-            }
-
-            Vector3 min = tilemap.CellToWorld(new Vector3Int(left, cell.y, cell.z));
-            Vector3 max = tilemap.CellToWorld(new Vector3Int(right + 1, cell.y + 1, cell.z));
-            bounds = new Bounds();
-            bounds.SetMinMax(min, max);
-            return true;
-        }
-
-        /// <summary>
-        /// Checks whether the cached platform bounds can support patrol movement.
-        /// </summary>
-        /// <returns><c>true</c> when the platform has a positive walkable width.</returns>
-        private bool HasUsablePlatformBounds()
-        {
-            return platformMaxX > platformMinX;
-        }
-
-        /// <summary>
-        /// Checks for ground just ahead of the enemy to avoid walking off platform edges.
-        /// </summary>
-        /// <param name="direction">The horizontal movement direction being tested.</param>
-        /// <returns><c>true</c> when ground is detected in front of the enemy.</returns>
-        private bool HasGroundAhead(float direction)
-        {
-            Bounds bounds = capsuleCollider.bounds;
-            Vector2 origin = new Vector2(
-                direction > 0f ? bounds.max.x + edgeCheckForwardDistance : bounds.min.x - edgeCheckForwardDistance,
-                bounds.min.y + 0.05f);
-
-            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, edgeCheckDownDistance, groundLayer);
-            return hit.collider != null && hit.normal.y >= minGroundNormalY;
-        }
-
-        /// <summary>
-        /// Checks whether a wall blocks movement in the desired patrol direction.
-        /// </summary>
-        /// <param name="direction">The horizontal movement direction being tested.</param>
-        /// <returns><c>true</c> when a blocking wall is directly ahead.</returns>
-        private bool IsWallAhead(float direction)
-        {
-            int hitCount = capsuleCollider.Cast(Vector2.right * direction, groundFilter, hitBuffer, wallCheckDistance);
-            for (int i = 0; i < hitCount; i++)
-            {
-                if (Vector2.Dot(hitBuffer[i].normal, Vector2.left * direction) > 0.5f)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -396,7 +219,10 @@ namespace IdleOnDemo.Gameplay.Enemies
         /// <param name="direction">The horizontal direction being faced.</param>
         private void SetFacingDirection(float direction)
         {
-            if (spriteRenderer != null && !Mathf.Approximately(direction, 0f)) spriteRenderer.flipX = direction < 0f;
+            if (spriteRenderer != null && !Mathf.Approximately(direction, 0f))
+            {
+                spriteRenderer.flipX = direction < 0f;
+            }
         }
 
         /// <summary>
@@ -405,7 +231,10 @@ namespace IdleOnDemo.Gameplay.Enemies
         /// <param name="isMoving">Whether the patrol state is currently moving.</param>
         private void SetMoving(bool isMoving)
         {
-            if (animator != null) animator.SetBool(IsMovingHash, isMoving);
+            if (animator != null)
+            {
+                animator.SetBool(IsMovingHash, isMoving);
+            }
         }
 
         /// <summary>
@@ -423,7 +252,6 @@ namespace IdleOnDemo.Gameplay.Enemies
             }
 
             OnDeath?.Invoke();
-
             StartCoroutine(DestroyAfterDeathAnimation());
         }
 
@@ -454,19 +282,14 @@ namespace IdleOnDemo.Gameplay.Enemies
         }
 
         /// <summary>
-        /// Keeps serialized patrol and combat tuning values in valid ranges.
+        /// Keeps serialized roaming and combat tuning values in valid ranges.
         /// </summary>
         private void OnValidate()
         {
             maxHealth = Mathf.Max(1, maxHealth);
             moveSpeed = Mathf.Max(0f, moveSpeed);
             targetReachedDistance = Mathf.Max(0.01f, targetReachedDistance);
-            groundCheckDistance = Mathf.Max(0.01f, groundCheckDistance);
-            edgeCheckForwardDistance = Mathf.Max(0f, edgeCheckForwardDistance);
-            edgeCheckDownDistance = Mathf.Max(0.01f, edgeCheckDownDistance);
-            wallCheckDistance = Mathf.Max(0.01f, wallCheckDistance);
-            platformEdgePadding = Mathf.Max(0f, platformEdgePadding);
-            minGroundNormalY = Mathf.Clamp01(minGroundNormalY);
+            deathAnimationDuration = Mathf.Max(0f, deathAnimationDuration);
         }
     }
 }
