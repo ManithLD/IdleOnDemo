@@ -67,6 +67,7 @@ namespace IdleOnDemo.Core
         {
             yield return FadeTo(1f);
 
+            Camera preservedCamera = Camera.main;
             PreservePlayerAndCamera(playerTransform);
 
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
@@ -83,6 +84,7 @@ namespace IdleOnDemo.Core
                 yield return null;
             }
 
+            RemoveLoadedSceneDuplicates(playerTransform, preservedCamera);
             TeleportPlayerToSpawn(spawnPointID, playerTransform);
 
             yield return FadeTo(0f);
@@ -166,6 +168,54 @@ namespace IdleOnDemo.Core
             if (mainCamera != null)
             {
                 DontDestroyOnLoad(mainCamera.gameObject);
+            }
+        }
+
+        /// <summary>
+        /// Removes newly loaded duplicate player and camera objects so the preserved runtime objects remain authoritative.
+        /// </summary>
+        /// <param name="playerTransform">The persistent player transform that should survive the transition.</param>
+        /// <param name="preservedCamera">The persistent camera that should survive the transition.</param>
+        private static void RemoveLoadedSceneDuplicates(Transform playerTransform, Camera preservedCamera)
+        {
+            if (playerTransform != null)
+            {
+                PlayerController[] players = Object.FindObjectsByType<PlayerController>(FindObjectsInactive.Exclude);
+                foreach (PlayerController player in players)
+                {
+                    if (player.transform == playerTransform)
+                    {
+                        continue;
+                    }
+
+                    Destroy(player.gameObject);
+                }
+            }
+
+            if (preservedCamera == null)
+            {
+                return;
+            }
+
+            preservedCamera.enabled = true;
+            preservedCamera.tag = "MainCamera";
+
+            Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsInactive.Exclude);
+            foreach (Camera camera in cameras)
+            {
+                if (camera == preservedCamera)
+                {
+                    continue;
+                }
+
+                camera.enabled = false;
+                AudioListener audioListener = camera.GetComponent<AudioListener>();
+                if (audioListener != null)
+                {
+                    audioListener.enabled = false;
+                }
+
+                Destroy(camera.gameObject);
             }
         }
 
