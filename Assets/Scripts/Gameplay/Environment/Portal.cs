@@ -1,6 +1,7 @@
 using IdleOnDemo.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using IdleOnDemo.Gameplay.Player;
 
 namespace IdleOnDemo.Gameplay.Environment
 {

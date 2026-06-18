@@ -2,6 +2,8 @@ using System;
 using IdleOnDemo.Core.Interfaces;
 using IdleOnDemo.Gameplay.Environment;
 using UnityEngine;
+using IdleOnDemo.Gameplay.Inventory;
+using IdleOnDemo.Gameplay.Progression;
 
 namespace IdleOnDemo.Gameplay.Enemies
 {
@@ -27,6 +29,11 @@ namespace IdleOnDemo.Gameplay.Enemies
 
         [Header("Stats")]
         [SerializeField] private int maxHealth = 100;
+
+        [Header("Rewards")]
+        [SerializeField] private int xpReward = 25;
+        [SerializeField] private int coinReward = 5;
+        [SerializeField] private ItemData dropItem;
 
         [Header("Roaming")]
         [SerializeField] private float moveSpeed = 2f;
@@ -251,8 +258,27 @@ namespace IdleOnDemo.Gameplay.Enemies
                 animator.SetTrigger(DieHash);
             }
 
+            AwardDeathRewards();
             OnDeath?.Invoke();
             StartCoroutine(DestroyAfterDeathAnimation());
+        }
+
+        /// <summary>
+        /// Grants configured enemy rewards to the active player and persistent inventory service.
+        /// </summary>
+        private void AwardDeathRewards()
+        {
+            PlayerStats playerStats = UnityEngine.Object.FindAnyObjectByType<PlayerStats>();
+            if (playerStats != null)
+            {
+                playerStats.AddXP(xpReward);
+                playerStats.AddCoins(coinReward);
+            }
+
+            if (dropItem != null && InventoryService.Instance != null)
+            {
+                InventoryService.Instance.AddItem(dropItem);
+            }
         }
 
         /// <summary>
@@ -287,6 +313,8 @@ namespace IdleOnDemo.Gameplay.Enemies
         private void OnValidate()
         {
             maxHealth = Mathf.Max(1, maxHealth);
+            xpReward = Mathf.Max(0, xpReward);
+            coinReward = Mathf.Max(0, coinReward);
             moveSpeed = Mathf.Max(0f, moveSpeed);
             targetReachedDistance = Mathf.Max(0.01f, targetReachedDistance);
             deathAnimationDuration = Mathf.Max(0f, deathAnimationDuration);

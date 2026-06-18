@@ -3,6 +3,7 @@ using IdleOnDemo.Gameplay.Environment;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using IdleOnDemo.Gameplay.Player;
 
 namespace IdleOnDemo.Core
 {
