@@ -173,6 +173,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Enemies.EnemyController
   maxHealth: 100
+  xpReward: 25
+  coinReward: 5
+  dropItem: {fileID: 0}
+  deathObjectiveID: kill_slime
   moveSpeed: 2
   targetReachedDistance: 0.08
   deathAnimationDuration: 1

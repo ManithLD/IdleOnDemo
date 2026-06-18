@@ -4,6 +4,7 @@ using IdleOnDemo.Gameplay.Environment;
 using UnityEngine;
 using IdleOnDemo.Gameplay.Inventory;
 using IdleOnDemo.Gameplay.Progression;
+using IdleOnDemo.Gameplay.Quests;
 
 namespace IdleOnDemo.Gameplay.Enemies
 {
@@ -34,6 +35,9 @@ namespace IdleOnDemo.Gameplay.Enemies
         [SerializeField] private int xpReward = 25;
         [SerializeField] private int coinReward = 5;
         [SerializeField] private ItemData dropItem;
+
+        [Header("Quest")]
+        [SerializeField] private string deathObjectiveID;
 
         [Header("Roaming")]
         [SerializeField] private float moveSpeed = 2f;
@@ -259,6 +263,7 @@ namespace IdleOnDemo.Gameplay.Enemies
             }
 
             AwardDeathRewards();
+            RegisterDeathObjectiveProgress();
             OnDeath?.Invoke();
             StartCoroutine(DestroyAfterDeathAnimation());
         }
@@ -278,6 +283,17 @@ namespace IdleOnDemo.Gameplay.Enemies
             if (dropItem != null && InventoryService.Instance != null)
             {
                 InventoryService.Instance.AddItem(dropItem);
+            }
+        }
+
+        /// <summary>
+        /// Registers objective progress for enemies configured with a death objective identifier.
+        /// </summary>
+        private void RegisterDeathObjectiveProgress()
+        {
+            if (!string.IsNullOrWhiteSpace(deathObjectiveID) && QuestManager.Instance != null)
+            {
+                QuestManager.Instance.RegisterObjectiveProgress(deathObjectiveID);
             }
         }
 
