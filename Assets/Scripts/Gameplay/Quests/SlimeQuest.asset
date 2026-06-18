@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f32d1c7e7e54b946aa4dd086549fcb5, type: 3}
   m_Name: SlimeQuest
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Quests.QuestData
-  questID: 
-  targetObjectiveID: 
-  requiredAmount: 1
-  coinReward: 0
+  questID: quest_noob_slimes
+  targetObjectiveID: kill_slime
+  requiredAmount: 10
+  coinReward: 50

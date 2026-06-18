@@ -44,6 +44,8 @@ namespace IdleOnDemo.Gameplay.Quests
         /// <param name="amount">The amount of objective progress to add.</param>
         public void RegisterObjectiveProgress(string objectiveID, int amount = 1)
         {
+            Debug.Log($"[DEBUG] QuestManager received progress for: {objectiveID}. Current: {currentProgress} / {ActiveQuest.RequiredAmount}");
+
             if (activeQuest == null || isCompleted || string.IsNullOrWhiteSpace(objectiveID) || amount <= 0)
             {
                 return;
@@ -55,6 +57,11 @@ namespace IdleOnDemo.Gameplay.Quests
             }
 
             currentProgress = Mathf.Min(currentProgress + amount, activeQuest.RequiredAmount);
+            if (currentProgress >= ActiveQuest.RequiredAmount)
+            {
+                Debug.Log("[DEBUG] Quest threshold reached!");
+            }
+
             if (currentProgress < activeQuest.RequiredAmount)
             {
                 return;
