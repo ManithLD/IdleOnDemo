@@ -24,10 +24,13 @@ namespace IdleOnDemo.Gameplay.Progression
         public int Coins => coins;
 
         public event Action<int> OnLevelUp;
+        public event Action<int, int> OnXPUpdated;
+        public event Action<int, int> OnHPUpdated;
 
         private void Awake()
         {
             NormalizeStats();
+            OnHPUpdated?.Invoke(currentHP, maxHP);
         }
 
         public int GetRequiredXP() => 10 + (CurrentLevel * 10);
@@ -53,6 +56,24 @@ namespace IdleOnDemo.Gameplay.Progression
                 OnLevelUp?.Invoke(CurrentLevel);
                 Debug.Log($"[PlayerStats] Leveled up! Now Level {CurrentLevel}. XP towards next: {CurrentXP}/{GetRequiredXP()}");
             }
+
+            OnXPUpdated?.Invoke(CurrentXP, GetRequiredXP());
+        }
+
+        /// <summary>
+        /// Applies incoming damage and notifies health UI listeners.
+        /// </summary>
+        /// <param name="amount">The amount of health to subtract.</param>
+        public void TakeDamage(int amount)
+        {
+            if (amount <= 0)
+            {
+                return;
+            }
+
+            currentHP -= amount;
+            currentHP = Mathf.Clamp(currentHP, 0, maxHP);
+            OnHPUpdated?.Invoke(currentHP, maxHP);
         }
 
         /// <summary>
@@ -72,7 +93,7 @@ namespace IdleOnDemo.Gameplay.Progression
         private void NormalizeStats()
         {
             maxHP = Mathf.Max(1, maxHP);
-            currentHP = currentHP <= 0 ? maxHP : Mathf.Clamp(currentHP, 1, maxHP);
+            currentHP = currentHP <= 0 ? maxHP : Mathf.Clamp(currentHP, 0, maxHP);
             damage = Mathf.Max(1, damage);
             coins = Mathf.Max(0, coins);
         }
