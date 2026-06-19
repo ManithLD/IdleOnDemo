@@ -37,7 +37,6 @@ namespace IdleOnDemo.Core
             }
 
             instance = this;
-            DontDestroyOnLoad(gameObject);
             CreateFadeCanvas();
         }
 

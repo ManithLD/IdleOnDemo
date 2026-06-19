@@ -32,7 +32,6 @@ namespace IdleOnDemo.Gameplay.Quests
             }
 
             instance = this;
-            DontDestroyOnLoad(gameObject);
             RebuildQuestDefinitionRegistry();
         }
 
