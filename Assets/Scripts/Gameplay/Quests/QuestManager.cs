@@ -1,28 +1,27 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace IdleOnDemo.Gameplay.Quests
 {
     /// <summary>
-    /// Persistent quest service that tracks progress against one active quest definition.
+    /// Persistent quest service that tracks runtime quest states and broadcasts updates to observers.
     /// </summary>
     public sealed class QuestManager : MonoBehaviour
     {
         private static QuestManager instance;
 
-        [SerializeField] private QuestData activeQuest;
-        [SerializeField] private int currentProgress;
-        [SerializeField] private bool isCompleted;
+        [SerializeField] private List<QuestData> questDefinitions = new List<QuestData>();
+
+        private Dictionary<string, QuestRuntimeState> questStates = new Dictionary<string, QuestRuntimeState>();
+        private Dictionary<string, QuestData> questDefinitionsByID = new Dictionary<string, QuestData>();
 
         public static QuestManager Instance => instance;
-        public QuestData ActiveQuest => activeQuest;
-        public int CurrentProgress => currentProgress;
-        public bool IsCompleted => isCompleted;
 
         /// <summary>
-        /// Raised once when the active quest reaches its required objective progress.
+        /// Raised whenever a quest runtime state changes.
         /// </summary>
-        public event Action<QuestData> OnQuestCompleted;
+        public event Action<QuestRuntimeState> OnQuestUpdated;
 
         private void Awake()
         {
@@ -34,71 +33,135 @@ namespace IdleOnDemo.Gameplay.Quests
 
             instance = this;
             DontDestroyOnLoad(gameObject);
-            NormalizeProgress();
+            RebuildQuestDefinitionRegistry();
+        }
+
+        public QuestRuntimeState GetQuestState(string questID)
+        {
+            if (string.IsNullOrWhiteSpace(questID))
+            {
+                return null;
+            }
+
+            if (!questStates.TryGetValue(questID, out QuestRuntimeState state))
+            {
+                state = new QuestRuntimeState(questID);
+                questStates.Add(questID, state);
+            }
+
+            return state;
+        }
+
+        public void AcceptQuest(QuestData quest)
+        {
+            if (quest == null || string.IsNullOrWhiteSpace(quest.QuestID))
+            {
+                return;
+            }
+
+            RegisterQuestDefinition(quest);
+            QuestRuntimeState state = GetQuestState(quest.QuestID);
+            if (state == null)
+            {
+                return;
+            }
+
+            state.IsAccepted = true;
+            Debug.Log("Quest Accepted!");
+            OnQuestUpdated?.Invoke(state);
         }
 
         /// <summary>
-        /// Adds progress to the active quest when the objective identifier matches its target.
+        /// Adds progress to any accepted quest whose target objective identifier matches gameplay progress.
         /// </summary>
         /// <param name="objectiveID">The objective identifier reported by gameplay, such as kill_slime.</param>
         /// <param name="amount">The amount of objective progress to add.</param>
         public void RegisterObjectiveProgress(string objectiveID, int amount = 1)
         {
-            Debug.Log($"[DEBUG] QuestManager received progress for: {objectiveID}. Current: {currentProgress} / {ActiveQuest.RequiredAmount}");
-
-            if (activeQuest == null || isCompleted || string.IsNullOrWhiteSpace(objectiveID) || amount <= 0)
+            if (string.IsNullOrWhiteSpace(objectiveID) || amount <= 0)
             {
                 return;
             }
 
-            if (!string.Equals(objectiveID, activeQuest.TargetObjectiveID, StringComparison.Ordinal))
+            List<QuestRuntimeState> updatedStates = new List<QuestRuntimeState>();
+            foreach (QuestRuntimeState state in questStates.Values)
             {
-                return;
+                if (state == null || !state.IsAccepted || state.IsCompleted)
+                {
+                    continue;
+                }
+
+                if (!questDefinitionsByID.TryGetValue(state.QuestID, out QuestData quest) || quest == null)
+                {
+                    continue;
+                }
+
+                if (!string.Equals(objectiveID, quest.TargetObjectiveID, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                state.CurrentProgress = Mathf.Min(state.CurrentProgress + amount, quest.RequiredAmount);
+                Debug.Log($"[DEBUG] QuestManager received progress for: {objectiveID}. Current: {state.CurrentProgress} / {quest.RequiredAmount}");
+
+                if (state.CurrentProgress >= quest.RequiredAmount)
+                {
+                    state.IsCompleted = true;
+                    Debug.Log("[DEBUG] Quest threshold reached!");
+                }
+
+                updatedStates.Add(state);
             }
 
-            currentProgress = Mathf.Min(currentProgress + amount, activeQuest.RequiredAmount);
-            if (currentProgress >= ActiveQuest.RequiredAmount)
+            foreach (QuestRuntimeState state in updatedStates)
             {
-                Debug.Log("[DEBUG] Quest threshold reached!");
+                OnQuestUpdated?.Invoke(state);
             }
-
-            if (currentProgress < activeQuest.RequiredAmount)
-            {
-                return;
-            }
-
-            isCompleted = true;
-            OnQuestCompleted?.Invoke(activeQuest);
         }
 
-        /// <summary>
-        /// Assigns a new active quest and resets runtime progress for it.
-        /// </summary>
-        /// <param name="quest">The quest definition to track.</param>
-        public void SetActiveQuest(QuestData quest)
+        public void TurnInQuest(string questID)
         {
-            activeQuest = quest;
-            currentProgress = 0;
-            isCompleted = false;
-            NormalizeProgress();
-        }
-
-        private void NormalizeProgress()
-        {
-            currentProgress = Mathf.Max(0, currentProgress);
-            if (activeQuest == null)
+            QuestRuntimeState state = GetQuestState(questID);
+            if (state == null)
             {
-                isCompleted = false;
                 return;
             }
 
-            currentProgress = Mathf.Min(currentProgress, activeQuest.RequiredAmount);
-            isCompleted = isCompleted || currentProgress >= activeQuest.RequiredAmount;
+            state.IsTurnedIn = true;
+            OnQuestUpdated?.Invoke(state);
+        }
+
+        private void RegisterQuestDefinition(QuestData quest)
+        {
+            if (quest == null || string.IsNullOrWhiteSpace(quest.QuestID))
+            {
+                return;
+            }
+
+            questDefinitionsByID[quest.QuestID] = quest;
+            if (!questDefinitions.Contains(quest))
+            {
+                questDefinitions.Add(quest);
+            }
+        }
+
+        private void RebuildQuestDefinitionRegistry()
+        {
+            questDefinitionsByID.Clear();
+            foreach (QuestData quest in questDefinitions)
+            {
+                if (quest == null || string.IsNullOrWhiteSpace(quest.QuestID))
+                {
+                    continue;
+                }
+
+                questDefinitionsByID[quest.QuestID] = quest;
+            }
         }
 
         private void OnValidate()
         {
-            NormalizeProgress();
+            questDefinitions.RemoveAll(quest => quest == null);
         }
     }
 }
