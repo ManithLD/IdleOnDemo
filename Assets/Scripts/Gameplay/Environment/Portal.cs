@@ -21,6 +21,8 @@ namespace IdleOnDemo.Gameplay.Environment
         private Transform playerTransform;
         private Animator portalAnimator;
         private static readonly int IsLockedHash = Animator.StringToHash("IsLocked");
+        private static readonly int PortalLockedStateHash = Animator.StringToHash("PortalLockedState");
+        private static readonly int PortalUnlockedStateHash = Animator.StringToHash("PortalUnlockedState");
         private bool isLocked;
 
         /// <summary>
@@ -32,16 +34,23 @@ namespace IdleOnDemo.Gameplay.Environment
         }
 
         /// <summary>
-        /// Subscribes to quest updates and syncs the current lock state.
+        /// Subscribes to quest updates and snaps to the correct lock state with no transition delay.
+        /// Handles re-enable cycles (e.g. pooling, toggled portals) after the initial scene load.
         /// </summary>
         private void OnEnable()
         {
-            if (QuestManager.Instance != null)
-            {
-                QuestManager.Instance.OnQuestUpdated += HandleQuestUpdated;
-            }
+            SubscribeToQuestUpdates();
+            RefreshLockState(snapImmediately: true);
+        }
 
-            RefreshLockState();
+        /// <summary>
+        /// Re-syncs the lock state once every object's Awake/OnEnable in the scene has run,
+        /// guarding against the case where QuestManager.Instance wasn't set yet during OnEnable.
+        /// </summary>
+        private void Start()
+        {
+            SubscribeToQuestUpdates();
+            RefreshLockState(snapImmediately: true);
         }
 
         /// <summary>
@@ -56,6 +65,21 @@ namespace IdleOnDemo.Gameplay.Environment
         }
 
         /// <summary>
+        /// Subscribes to QuestManager's update event, idempotently, so it's safe to call
+        /// from both OnEnable and Start without risking a duplicate subscription.
+        /// </summary>
+        private void SubscribeToQuestUpdates()
+        {
+            if (QuestManager.Instance == null)
+            {
+                return;
+            }
+
+            QuestManager.Instance.OnQuestUpdated -= HandleQuestUpdated;
+            QuestManager.Instance.OnQuestUpdated += HandleQuestUpdated;
+        }
+
+        /// <summary>
         /// Refreshes the lock state when the relevant quest's state changes.
         /// </summary>
         /// <param name="state">The quest runtime state that was updated.</param>
@@ -66,20 +90,39 @@ namespace IdleOnDemo.Gameplay.Environment
                 return;
             }
 
-            RefreshLockState();
+            RefreshLockState(snapImmediately: false);
         }
 
         /// <summary>
         /// Recomputes whether the portal is locked and updates the Animator accordingly.
         /// </summary>
-        private void RefreshLockState()
+        /// <param name="snapImmediately">
+        /// If true, jumps directly into the target state instead of transitioning, but only
+        /// when the Animator isn't already in that state, to avoid restarting the loop unnecessarily.
+        /// </param>
+        private void RefreshLockState(bool snapImmediately)
         {
             isLocked = !string.IsNullOrEmpty(requiredQuestID) &&
                        (QuestManager.Instance == null || !QuestManager.Instance.GetQuestState(requiredQuestID).IsTurnedIn);
 
-            if (portalAnimator != null)
+            if (portalAnimator == null)
             {
-                portalAnimator.SetBool(IsLockedHash, isLocked);
+                return;
+            }
+
+            portalAnimator.SetBool(IsLockedHash, isLocked);
+
+            if (!snapImmediately)
+            {
+                return;
+            }
+
+            int targetStateHash = isLocked ? PortalLockedStateHash : PortalUnlockedStateHash;
+            AnimatorStateInfo currentState = portalAnimator.GetCurrentAnimatorStateInfo(0);
+            if (currentState.shortNameHash != targetStateHash)
+            {
+                portalAnimator.Play(targetStateHash, 0, 0f);
+                portalAnimator.Update(0f);
             }
         }
 
