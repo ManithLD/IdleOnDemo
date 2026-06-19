@@ -1,5 +1,4 @@
 using IdleOnDemo.Gameplay.Player;
-using IdleOnDemo.Gameplay.Progression;
 using IdleOnDemo.Gameplay.Quests;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -68,37 +67,18 @@ namespace IdleOnDemo.Gameplay.Environment
                 return;
             }
 
-            if (state.IsCompleted && !state.IsTurnedIn)
+            if (state.IsCompleted)
             {
-                PlayerStats playerStats = FindPlayerStats();
-                if (playerStats == null)
+                bool success = questManager.TurnInQuest(targetQuest.QuestID);
+                if (success)
                 {
-                    Debug.LogWarning("Quest complete, but no PlayerStats component was found to receive the reward.");
-                    return;
+                    Debug.Log($"Quest complete! Received {targetQuest.CoinReward} coins.");
                 }
-
-                playerStats.AddCoins(targetQuest.CoinReward);
-                Debug.Log($"Quest complete! Received {targetQuest.CoinReward} coins.");
-                questManager.TurnInQuest(targetQuest.QuestID);
-                return;
+                else
+                {
+                    Debug.Log("Reward already claimed.");
+                }
             }
-
-            if (state.IsTurnedIn)
-            {
-                Debug.Log("Reward already claimed.");
-            }
-        }
-
-        private PlayerStats FindPlayerStats()
-        {
-            PlayerStats playerStats = UnityEngine.Object.FindAnyObjectByType<PlayerStats>();
-            if (playerStats != null)
-            {
-                return playerStats;
-            }
-
-            PlayerController playerController = UnityEngine.Object.FindAnyObjectByType<PlayerController>();
-            return playerController != null ? playerController.GetComponent<PlayerStats>() : null;
         }
 
         private bool WasClickedByInputFallback()

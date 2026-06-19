@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using IdleOnDemo.Gameplay.Player;
+using IdleOnDemo.Gameplay.Progression;
 using UnityEngine;
 
 namespace IdleOnDemo.Gameplay.Quests
@@ -118,16 +120,42 @@ namespace IdleOnDemo.Gameplay.Quests
             }
         }
 
-        public void TurnInQuest(string questID)
+        public bool TurnInQuest(string questID)
         {
             QuestRuntimeState state = GetQuestState(questID);
-            if (state == null)
+            if (state == null || !state.IsCompleted || state.IsTurnedIn)
             {
-                return;
+                return false;
+            }
+
+            if (!questDefinitionsByID.TryGetValue(questID, out QuestData questDefinition) || questDefinition == null)
+            {
+                return false;
             }
 
             state.IsTurnedIn = true;
+
+            PlayerStats player = FindPlayerStats();
+            if (player != null)
+            {
+                player.AddCoins(questDefinition.CoinReward);
+            }
+
+            Debug.Log($"Quest turned in: {questID}. Rewarded {questDefinition.CoinReward} coins.");
             OnQuestUpdated?.Invoke(state);
+            return true;
+        }
+
+        private static PlayerStats FindPlayerStats()
+        {
+            PlayerStats player = UnityEngine.Object.FindAnyObjectByType<PlayerStats>();
+            if (player != null)
+            {
+                return player;
+            }
+
+            PlayerController playerController = UnityEngine.Object.FindAnyObjectByType<PlayerController>();
+            return playerController != null ? playerController.GetComponent<PlayerStats>() : null;
         }
 
         private void RegisterQuestDefinition(QuestData quest)
