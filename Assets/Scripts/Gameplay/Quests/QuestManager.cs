@@ -139,6 +139,7 @@ namespace IdleOnDemo.Gameplay.Quests
             if (player != null)
             {
                 player.AddCoins(questDefinition.CoinReward);
+                player.AddXP(questDefinition.XPReward);
             }
 
             Debug.Log($"Quest turned in: {questID}. Rewarded {questDefinition.CoinReward} coins.");

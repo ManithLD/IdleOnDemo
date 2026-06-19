@@ -12,16 +12,19 @@ namespace IdleOnDemo.Gameplay.Quests
         [SerializeField] private string targetObjectiveID;
         [SerializeField] private int requiredAmount = 1;
         [SerializeField] private int coinReward;
+        [SerializeField] private int xpReward;
 
         public string QuestID => questID;
         public string TargetObjectiveID => targetObjectiveID;
         public int RequiredAmount => requiredAmount;
         public int CoinReward => coinReward;
+        public int XPReward => xpReward;
 
         private void OnValidate()
         {
             requiredAmount = Mathf.Max(1, requiredAmount);
             coinReward = Mathf.Max(0, coinReward);
+            xpReward = Mathf.Max(0, xpReward);
         }
     }
 }
