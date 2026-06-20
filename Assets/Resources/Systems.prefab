@@ -6676,6 +6676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.UI.NavigationMenuUI
   itemsButton: {fileID: 6551706257419102272}
+  existButton: {fileID: 2142969455075414747}
   inventoryContainer: {fileID: 2065276892778261430}
   buttonOffSprite: {fileID: -5448390797186340699, guid: 8b58a38a1f6171d48ade511e871c501e, type: 3}
   buttonOnSprite: {fileID: -4556576044292280589, guid: 8b58a38a1f6171d48ade511e871c501e, type: 3}

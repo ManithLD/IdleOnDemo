@@ -7,6 +7,7 @@ namespace IdleOnDemo.UI
     {
         [Header("Buttons")]
         [SerializeField] private Button itemsButton;
+        [SerializeField] private Button existButton;
 
         [Header("Containers")]
         [SerializeField] private GameObject inventoryContainer;
@@ -22,6 +23,11 @@ namespace IdleOnDemo.UI
             if (itemsButton != null)
             {
                 itemsButton.onClick.AddListener(OnItemsButtonClicked);
+            }
+
+            if (existButton != null)
+            {
+                existButton.onClick.AddListener(OnExistButtonClicked);
             }
 
             // Ensure inventory starts closed
@@ -41,6 +47,12 @@ namespace IdleOnDemo.UI
             }
 
             itemsButton.image.sprite = isInventoryOpen ? buttonOnSprite : buttonOffSprite;
+        }
+
+        private void OnExistButtonClicked()
+        {
+            Debug.Log("Exiting Game...");
+            Application.Quit();
         }
 
         private void OnDestroy()
