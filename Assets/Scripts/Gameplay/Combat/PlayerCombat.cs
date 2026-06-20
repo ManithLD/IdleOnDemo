@@ -32,6 +32,13 @@ namespace IdleOnDemo.Gameplay.Player
         private Coroutine activeAttackRoutine;
         private float nextAttackTime;
 
+        public bool IsAutoAttackEnabled => autoAttackEnabled;
+
+        public void ToggleAutoAttack()
+        {
+            autoAttackEnabled = !autoAttackEnabled;
+        }
+
         /// <summary>
         /// Caches required player references and initializes the default attack target layer.
         /// </summary>
