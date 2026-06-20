@@ -63,5 +63,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1399722427617169512, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7548898731884882268}
   m_SourcePrefab: {fileID: 100100000, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+--- !u!1 &6087770968638603241 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1399722427617169512, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+  m_PrefabInstance: {fileID: 5120816324165463937}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7548898731884882268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6087770968638603241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a98f7fd8e14394a852101805d35c4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Inventory.EnemyDropTable
+  pickupPrefab: {fileID: 194919344435972872, guid: dc996ee16dbe9a945a18fad4accd56a1, type: 3}
+  drops:
+  - item: {fileID: 11400000, guid: d05c20291ba5d724585ffba2c6b063a6, type: 2}
+    minAmount: 1
+    maxAmount: 2
+    dropChance: 1
+  spawnScatterRadius: 0.35

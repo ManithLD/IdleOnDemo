@@ -2,7 +2,6 @@ using System;
 using IdleOnDemo.Core.Interfaces;
 using IdleOnDemo.Gameplay.Environment;
 using UnityEngine;
-using IdleOnDemo.Gameplay.Inventory;
 using IdleOnDemo.Gameplay.Progression;
 using IdleOnDemo.Gameplay.Quests;
 
@@ -34,7 +33,6 @@ namespace IdleOnDemo.Gameplay.Enemies
         [Header("Rewards")]
         [SerializeField] private int xpReward = 25;
         [SerializeField] private int coinReward = 5;
-        [SerializeField] private ItemData dropItem;
 
         [Header("Quest")]
         [SerializeField] private string deathObjectiveID;
@@ -284,7 +282,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         }
 
         /// <summary>
-        /// Grants configured enemy rewards to the active player and persistent inventory service.
+        /// Grants configured XP and coin rewards to the active player.
         /// </summary>
         private void AwardDeathRewards()
         {
@@ -293,11 +291,6 @@ namespace IdleOnDemo.Gameplay.Enemies
             {
                 playerStats.AddXP(xpReward);
                 playerStats.AddCoins(coinReward);
-            }
-
-            if (dropItem != null && InventoryService.Instance != null)
-            {
-                InventoryService.Instance.AddItem(dropItem);
             }
         }
 

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bbb5476fc02cd547b4994b26703b8f3, type: 3}
+  m_Name: SlimeGem
+  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Inventory.ItemData
+  itemID: slime_gem
+  displayName: Slime Gem
+  icon: {fileID: -8707133783163546048, guid: f77f37a34e00add42ba46b384928e05e, type: 3}
+  isStackable: 1
