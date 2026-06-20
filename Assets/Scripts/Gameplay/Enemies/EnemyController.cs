@@ -70,6 +70,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         /// </summary>
         /// <value><c>true</c> after lethal damage is received.</value>
         public bool IsDead => currentState == EnemyState.Dead;
+        public EnemySpawnerZone HomeZone => homeZone;
 
         public bool IsSelected { get; private set; }
 

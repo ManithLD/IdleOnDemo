@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bbb5476fc02cd547b4994b26703b8f3, type: 3}
-  m_Name: SlimeGem
+  m_Name: SlimeCandy
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Inventory.ItemData
-  itemID: slime_gem
-  displayName: Slime Gem
-  icon: {fileID: -8707133783163546048, guid: f77f37a34e00add42ba46b384928e05e, type: 3}
-  dropPrefab: {fileID: 194919344435972872, guid: dc996ee16dbe9a945a18fad4accd56a1, type: 3}
+  itemID: slime_candy
+  displayName: Slime Candy
+  icon: {fileID: -4945925793832190753, guid: 87b2c02b98d63404295cf5cf24f90d8d, type: 3}
+  dropPrefab: {fileID: 8160942761346565057, guid: 8653f9ca67f41524e8b49f84fa020ecf, type: 3}
   isStackable: 1

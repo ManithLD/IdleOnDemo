@@ -11,6 +11,8 @@ namespace IdleOnDemo.Gameplay.Inventory
     [RequireComponent(typeof(EnemyController))]
     public sealed class EnemyDropTable : MonoBehaviour
     {
+        private const float DropVerticalOffset = 0.5f;
+
         [Serializable]
         private sealed class DropEntry
         {
@@ -20,9 +22,8 @@ namespace IdleOnDemo.Gameplay.Inventory
             [Range(0f, 1f)] public float dropChance = 1f;
         }
 
-        [SerializeField] private ItemPickup pickupPrefab;
         [SerializeField] private List<DropEntry> drops = new List<DropEntry>();
-        [SerializeField] private float spawnScatterRadius = 0.35f;
+        [SerializeField] private float spawnScatterRadius = 1f;
 
         private EnemyController enemyController;
         private bool hasDropped;
@@ -70,7 +71,7 @@ namespace IdleOnDemo.Gameplay.Inventory
             }
 
             hasDropped = true;
-            if (pickupPrefab == null || drops == null)
+            if (drops == null)
             {
                 return;
             }
@@ -83,14 +84,31 @@ namespace IdleOnDemo.Gameplay.Inventory
                     continue;
                 }
 
+                if (drop.item.DropPrefab == null)
+                {
+                    Debug.LogWarning($"EnemyDropTable could not spawn drop for {drop.item.name} because its ItemData has no drop prefab assigned.");
+                    continue;
+                }
+
                 int quantity = UnityEngine.Random.Range(drop.minAmount, drop.maxAmount + 1);
                 if (quantity <= 0)
                 {
                     continue;
                 }
 
-                Vector3 spawnPosition = transform.position + GetScatterOffset();
-                ItemPickup pickup = Instantiate(pickupPrefab, spawnPosition, Quaternion.identity);
+                float spawnX = transform.position.x + GetScatterOffset().x;
+                float spawnY = transform.position.y;
+                if (enemyController.HomeZone != null)
+                {
+                    BoxCollider2D zoneCollider = enemyController.HomeZone.GetComponent<BoxCollider2D>();
+                    if (zoneCollider != null)
+                    {
+                        spawnY = zoneCollider.bounds.min.y;
+                    }
+                }
+
+                Vector3 spawnPosition = new Vector3(spawnX, spawnY + DropVerticalOffset, 0f);
+                ItemPickup pickup = Instantiate(drop.item.DropPrefab, spawnPosition, Quaternion.identity);
                 pickup.Initialize(drop.item, quantity);
             }
         }
