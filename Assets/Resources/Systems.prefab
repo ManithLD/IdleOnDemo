@@ -487,7 +487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4371448771755016803}
   - component: {fileID: 3810930861014161039}
-  - component: {fileID: 2457636927394847865}
+  - component: {fileID: 4287873279107025566}
   m_Layer: 0
   m_Name: Attacks_Button_Container
   m_TagString: Untagged
@@ -544,7 +544,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2457636927394847865
+--- !u!114 &4287873279107025566
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -553,19 +553,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 410218225647704580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d5e76bb7ab1d684d92275eee6e18bfc, type: 3}
+  m_Script: {fileID: 11500000, guid: be408bcc408284845a4a99c8ee245306, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.UI.MenuButtonsUI
-  autoButton: {fileID: 5674811416122485437}
-  autoButtonText: {fileID: 1652429666087583323}
-  autoButtonBackgroundImage: {fileID: 3883238697496019937}
-  autoIconImage: {fileID: 3243449018289370298}
-  attacksButton: {fileID: 0}
-  attacksButtonBackgroundImage: {fileID: 0}
-  buttonOffSprite: {fileID: -5448390797186340699, guid: 8b58a38a1f6171d48ade511e871c501e, type: 3}
-  buttonOnSprite: {fileID: -4556576044292280589, guid: 8b58a38a1f6171d48ade511e871c501e, type: 3}
-  autoIconOffSprite: {fileID: 511153153249456005, guid: 78ec6bc261b8bbd419dc4e6e749c66e3, type: 3}
-  autoIconOnSprite: {fileID: 4123603183123714085, guid: 78ec6bc261b8bbd419dc4e6e749c66e3, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.UI.AttackTypeSelectorUI
+  attackButtons:
+  - button: {fileID: 5674811416122485437}
+    attackType: 0
+  - button: {fileID: 4226196148787272137}
+    attackType: 1
+  - button: {fileID: 2254319729884915448}
+    attackType: 2
+  - button: {fileID: 106195558802577469}
+    attackType: 3
+  defaultButton: {fileID: 5674811416122485437}
+  defaultAttackType: 0
+  buttonOffSprite: {fileID: 3735604927057173224, guid: dfb4e425061c9ba469a45d5caed4a1fb, type: 3}
+  buttonOnSprite: {fileID: 3412908974078662053, guid: dfb4e425061c9ba469a45d5caed4a1fb, type: 3}
 --- !u!1 &1029441175427063641
 GameObject:
   m_ObjectHideFlags: 0

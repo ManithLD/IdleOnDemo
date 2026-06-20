@@ -13,6 +13,7 @@ namespace IdleOnDemo.Gameplay.Player
     public class PlayerCombat : MonoBehaviour
     {
         private static readonly int AttackHash = Animator.StringToHash("Attack");
+        private static readonly int AttackTypeHash = Animator.StringToHash("AttackType");
 
         /// <summary>
         /// Controls whether the player automatically approaches and attacks the nearest enemy.
@@ -36,6 +37,7 @@ namespace IdleOnDemo.Gameplay.Player
         private EnemyController currentAutoTarget;
 
         public bool IsAutoAttackEnabled => autoAttackEnabled;
+        public AttackType CurrentAttackType { get; private set; } = AttackType.Default;
 
         public void ToggleAutoAttack()
         {
@@ -45,6 +47,15 @@ namespace IdleOnDemo.Gameplay.Player
             {
                 ClearAutoTarget();
             }
+        }
+
+        /// <summary>
+        /// Sets the attack animation variant used by the next attack trigger.
+        /// </summary>
+        /// <param name="type">The attack animation variant to play on future attacks.</param>
+        public void SetAttackType(AttackType type)
+        {
+            CurrentAttackType = type;
         }
 
         /// <summary>
@@ -193,6 +204,7 @@ namespace IdleOnDemo.Gameplay.Player
             if (animator != null)
             {
                 animator.ResetTrigger(AttackHash);
+                animator.SetFloat(AttackTypeHash, (float)CurrentAttackType);
                 animator.SetTrigger(AttackHash);
             }
 
