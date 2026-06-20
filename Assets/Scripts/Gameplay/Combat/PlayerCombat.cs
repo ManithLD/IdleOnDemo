@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using IdleOnDemo.Core.Interfaces;
+using IdleOnDemo.Gameplay.Combat;
 using IdleOnDemo.Gameplay.Enemies;
 using IdleOnDemo.Gameplay.Progression;
 using UnityEngine;
@@ -363,6 +364,7 @@ namespace IdleOnDemo.Gameplay.Player
             int baseDamage = playerStats != null ? playerStats.Damage : attackDamage;
             int damageAmount = Mathf.RoundToInt(baseDamage * profile.damageMultiplier);
             damageable.TakeDamage(damageAmount, Vector2.right * direction, 0f);
+            DamagePopupManager.ShowDamage(damageAmount, target.transform.position);
         }
 
         private float GetDirectionToTarget(EnemyController target)
