@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace IdleOnDemo.Gameplay.Inventory
@@ -23,7 +24,6 @@ namespace IdleOnDemo.Gameplay.Inventory
             }
 
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         /// <summary>
@@ -45,12 +45,43 @@ namespace IdleOnDemo.Gameplay.Inventory
 
             int currentAmount = items.TryGetValue(item, out int existingAmount) ? existingAmount : 0;
             items[item] = item.IsStackable ? currentAmount + amount : 1;
+            LogInventoryState();
         }
 
         public bool TryGetQuantity(ItemData item, out int quantity)
         {
             quantity = 0;
             return item != null && items.TryGetValue(item, out quantity);
+        }
+
+        private void LogInventoryState()
+        {
+            StringBuilder builder = new StringBuilder("[Inventory] ");
+            bool hasEntry = false;
+
+            foreach (KeyValuePair<ItemData, int> entry in items)
+            {
+                if (entry.Key == null)
+                {
+                    continue;
+                }
+
+                if (hasEntry)
+                {
+                    builder.Append(" | ");
+                }
+
+                string itemName = !string.IsNullOrWhiteSpace(entry.Key.DisplayName) ? entry.Key.DisplayName : entry.Key.name;
+                builder.Append(itemName);
+                builder.Append(": ");
+                builder.Append(entry.Value);
+                hasEntry = true;
+            }
+
+            if (hasEntry)
+            {
+                Debug.Log(builder.ToString());
+            }
         }
     }
 }

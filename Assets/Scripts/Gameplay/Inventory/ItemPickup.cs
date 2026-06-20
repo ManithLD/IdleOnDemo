@@ -48,6 +48,21 @@ namespace IdleOnDemo.Gameplay.Inventory
         }
 
         /// <summary>
+        /// Adds this pickup's item stack to the inventory when clicked, then removes it from the world.
+        /// </summary>
+        private void OnMouseDown()
+        {
+            if (InventoryService.Instance == null)
+            {
+                Debug.LogWarning("ItemPickup could not be collected because no InventoryService instance exists.");
+                return;
+            }
+
+            InventoryService.Instance.AddItem(item, quantity);
+            Destroy(gameObject);
+        }
+
+        /// <summary>
         /// Finds a child or same-object sprite renderer when one has not been assigned.
         /// </summary>
         private void CacheIconRenderer()

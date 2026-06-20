@@ -107,7 +107,7 @@ namespace IdleOnDemo.Gameplay.Inventory
                     }
                 }
 
-                Vector3 spawnPosition = new Vector3(spawnX, spawnY + DropVerticalOffset, 0f);
+                Vector3 spawnPosition = new Vector3(spawnX, spawnY + DropVerticalOffset, -2f);
                 ItemPickup pickup = Instantiate(drop.item.DropPrefab, spawnPosition, Quaternion.identity);
                 pickup.Initialize(drop.item, quantity);
             }
