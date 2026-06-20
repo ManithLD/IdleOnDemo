@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using IdleOnDemo.Core.Interfaces;
 using IdleOnDemo.Gameplay.Enemies;
 using IdleOnDemo.Gameplay.Progression;
@@ -15,6 +16,14 @@ namespace IdleOnDemo.Gameplay.Player
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int AttackTypeHash = Animator.StringToHash("AttackType");
 
+        [System.Serializable]
+        private struct AttackProfile
+        {
+            public AttackType attackType;
+            public float damageMultiplier;
+            public float cooldown;
+        }
+
         /// <summary>
         /// Controls whether the player automatically approaches and attacks the nearest enemy.
         /// </summary>
@@ -26,6 +35,13 @@ namespace IdleOnDemo.Gameplay.Player
         [SerializeField] private float autoTargetYTolerance = 1.5f;
         [SerializeField] private float directionFlipDeadZone = 0.1f;
         [SerializeField] private int attackDamage = 25;
+        [SerializeField] private AttackProfile[] attackProfiles =
+        {
+            new AttackProfile { attackType = AttackType.Default, damageMultiplier = 1f, cooldown = 0.5f },
+            new AttackProfile { attackType = AttackType.Slash, damageMultiplier = 0.8f, cooldown = 0.35f },
+            new AttackProfile { attackType = AttackType.Dash, damageMultiplier = 1.25f, cooldown = 0.625f },
+            new AttackProfile { attackType = AttackType.ThreeSixty, damageMultiplier = 1.5f, cooldown = 0.9f }
+        };
         [SerializeField] private PlayerStats playerStats;
         [SerializeField] private LayerMask attackLayerMask;
         [SerializeField] private PlayerController playerController;
@@ -35,6 +51,8 @@ namespace IdleOnDemo.Gameplay.Player
         private Coroutine activeAttackRoutine;
         private float nextAttackTime;
         private EnemyController currentAutoTarget;
+        private Dictionary<AttackType, AttackProfile> attackProfileLookup = new Dictionary<AttackType, AttackProfile>();
+        private bool hasWarnedMissingAttackProfile;
 
         public bool IsAutoAttackEnabled => autoAttackEnabled;
         public AttackType CurrentAttackType { get; private set; } = AttackType.Default;
@@ -79,6 +97,7 @@ namespace IdleOnDemo.Gameplay.Player
             }
 
             playerTargeting.SetTargetLayerMask(attackLayerMask);
+            BuildAttackProfileLookup();
         }
 
         /// <summary>
@@ -185,8 +204,10 @@ namespace IdleOnDemo.Gameplay.Player
             }
 
             direction = Mathf.Approximately(direction, 0f) ? playerController.FacingDirection : Mathf.Sign(direction);
-            nextAttackTime = Time.time + attackCooldown;
-            activeAttackRoutine = StartCoroutine(AttackRoutine(target, direction));
+            AttackType attackType = CurrentAttackType;
+            AttackProfile profile = GetProfile(attackType);
+            nextAttackTime = Time.time + profile.cooldown;
+            activeAttackRoutine = StartCoroutine(AttackRoutine(target, direction, attackType, profile));
         }
 
         /// <summary>
@@ -194,8 +215,10 @@ namespace IdleOnDemo.Gameplay.Player
         /// </summary>
         /// <param name="target">The enemy locked when the swing starts.</param>
         /// <param name="direction">The horizontal direction used for facing and knockback.</param>
+        /// <param name="attackType">The attack animation type locked in when the swing starts.</param>
+        /// <param name="profile">The attack tuning profile locked in when the swing starts.</param>
         /// <returns>An IEnumerator used by Unity's coroutine scheduler.</returns>
-        private IEnumerator AttackRoutine(EnemyController target, float direction)
+        private IEnumerator AttackRoutine(EnemyController target, float direction, AttackType attackType, AttackProfile profile)
         {
             playerController.SetSimulatedInput(0f);
             playerController.FaceDirection(direction);
@@ -204,16 +227,72 @@ namespace IdleOnDemo.Gameplay.Player
             if (animator != null)
             {
                 animator.ResetTrigger(AttackHash);
-                animator.SetFloat(AttackTypeHash, (float)CurrentAttackType);
+                animator.SetFloat(AttackTypeHash, (float)attackType);
                 animator.SetTrigger(AttackHash);
             }
 
-            TryDamageTarget(target, direction);
+            TryDamageTarget(target, direction, profile);
 
-            yield return new WaitForSeconds(attackCooldown);
+            yield return new WaitForSeconds(profile.cooldown);
 
             playerController.IsAttacking = false;
             activeAttackRoutine = null;
+        }
+
+        /// <summary>
+        /// Builds a runtime lookup table for attack profiles configured in the Inspector.
+        /// </summary>
+        private void BuildAttackProfileLookup()
+        {
+            attackProfileLookup.Clear();
+            if (attackProfiles == null)
+            {
+                return;
+            }
+
+            foreach (AttackProfile profile in attackProfiles)
+            {
+                AttackProfile clampedProfile = ClampProfile(profile);
+                attackProfileLookup[clampedProfile.attackType] = clampedProfile;
+            }
+        }
+
+        /// <summary>
+        /// Gets the configured profile for an attack type, or a fallback using base combat tuning.
+        /// </summary>
+        /// <param name="type">The attack type to look up.</param>
+        /// <returns>The configured profile, or a base-damage/base-cooldown fallback.</returns>
+        private AttackProfile GetProfile(AttackType type)
+        {
+            if (attackProfileLookup.TryGetValue(type, out AttackProfile profile))
+            {
+                return profile;
+            }
+
+            if (!hasWarnedMissingAttackProfile)
+            {
+                Debug.LogWarning($"PlayerCombat missing attack profile for {type}. Falling back to base attackDamage/attackCooldown values.");
+                hasWarnedMissingAttackProfile = true;
+            }
+
+            return new AttackProfile
+            {
+                attackType = type,
+                damageMultiplier = 1f,
+                cooldown = attackCooldown
+            };
+        }
+
+        /// <summary>
+        /// Clamps attack-profile tuning values to valid runtime ranges.
+        /// </summary>
+        /// <param name="profile">The profile to clamp.</param>
+        /// <returns>A copy of the profile with safe multiplier and cooldown values.</returns>
+        private AttackProfile ClampProfile(AttackProfile profile)
+        {
+            profile.damageMultiplier = Mathf.Max(0.1f, profile.damageMultiplier);
+            profile.cooldown = Mathf.Max(0.01f, profile.cooldown);
+            return profile;
         }
 
         /// <summary>
@@ -272,7 +351,8 @@ namespace IdleOnDemo.Gameplay.Player
         /// </summary>
         /// <param name="target">The target locked for the current swing.</param>
         /// <param name="direction">The horizontal direction used for knockback.</param>
-        private void TryDamageTarget(EnemyController target, float direction)
+        /// <param name="profile">The attack tuning profile locked for the current swing.</param>
+        private void TryDamageTarget(EnemyController target, float direction, AttackProfile profile)
         {
             if (target == null || target.IsDead)
             {
@@ -280,7 +360,8 @@ namespace IdleOnDemo.Gameplay.Player
             }
 
             IDamageable damageable = target;
-            int damageAmount = playerStats != null ? playerStats.Damage : attackDamage;
+            int baseDamage = playerStats != null ? playerStats.Damage : attackDamage;
+            int damageAmount = Mathf.RoundToInt(baseDamage * profile.damageMultiplier);
             damageable.TakeDamage(damageAmount, Vector2.right * direction, 0f);
         }
 
@@ -305,6 +386,16 @@ namespace IdleOnDemo.Gameplay.Player
             autoTargetYTolerance = Mathf.Max(0f, autoTargetYTolerance);
             directionFlipDeadZone = Mathf.Max(0f, directionFlipDeadZone);
             attackDamage = Mathf.Max(1, attackDamage);
+
+            if (attackProfiles == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < attackProfiles.Length; i++)
+            {
+                attackProfiles[i] = ClampProfile(attackProfiles[i]);
+            }
         }
 
         /// <summary>

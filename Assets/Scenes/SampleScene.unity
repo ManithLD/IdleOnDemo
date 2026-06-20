@@ -2524,7 +2524,22 @@ MonoBehaviour:
   autoAttackEnabled: 0
   attackRange: 1.5
   attackCooldown: 0.5
+  autoTargetYTolerance: 1.5
+  directionFlipDeadZone: 0.1
   attackDamage: 25
+  attackProfiles:
+  - attackType: 0
+    damageMultiplier: 1
+    cooldown: 0.5
+  - attackType: 1
+    damageMultiplier: 0.8
+    cooldown: 0.35
+  - attackType: 2
+    damageMultiplier: 1.25
+    cooldown: 0.625
+  - attackType: 3
+    damageMultiplier: 1.5
+    cooldown: 0.9
   playerStats: {fileID: 0}
   attackLayerMask:
     serializedVersion: 2
