@@ -29,7 +29,7 @@ namespace IdleOnDemo.Gameplay.Player
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private PhysicsMaterial2D movementPhysicsMaterial;
 
-        private readonly RaycastHit2D[] hitBuffer = new RaycastHit2D[4];
+        private readonly RaycastHit2D[] hitBuffer = new RaycastHit2D[16];
         private ContactFilter2D groundFilter;
 
         private Rigidbody2D rb;
@@ -76,14 +76,28 @@ namespace IdleOnDemo.Gameplay.Player
             animator ??= GetComponentInChildren<Animator>();
             spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
 
-            // Cache physics material and filter
+            // Cache physics material and restrict movement casts to ground-only blockers.
             capsuleCollider.sharedMaterial = movementPhysicsMaterial != null
                 ? movementPhysicsMaterial
                 : new PhysicsMaterial2D("Runtime_Player_NoFriction") { friction = 0f, bounciness = 0f };
 
-            groundFilter = new ContactFilter2D { layerMask = groundLayer, useTriggers = false };
+            ConfigureGroundFilter();
 
             InitializeInputActions();
+        }
+
+        /// <summary>
+        /// Configures movement collision casts to only query the ground layer, never enemies or other entity hitboxes.
+        /// </summary>
+        private void ConfigureGroundFilter()
+        {
+            if (groundLayer.value == 0)
+            {
+                groundLayer = LayerMask.GetMask("Ground");
+            }
+
+            groundFilter = new ContactFilter2D { useTriggers = false };
+            groundFilter.SetLayerMask(groundLayer);
         }
 
         /// <summary>
@@ -111,7 +125,7 @@ namespace IdleOnDemo.Gameplay.Player
         {
             if (IsAttacking)
             {
-                ApplyAttackLock();
+                UpdateAnimation();
                 return;
             }
 
@@ -335,6 +349,30 @@ namespace IdleOnDemo.Gameplay.Player
             Vector2 velocity = rb.linearVelocity;
             velocity.x = xVelocity;
             rb.linearVelocity = velocity;
+        }
+
+        /// <summary>
+        /// Keeps movement collision tuning valid and refreshes the cast filter when edited during play.
+        /// </summary>
+        private void OnValidate()
+        {
+            moveSpeed = Mathf.Max(0f, moveSpeed);
+            jumpForce = Mathf.Max(0f, jumpForce);
+            jumpReleaseDamping = Mathf.Clamp01(jumpReleaseDamping);
+            coyoteTime = Mathf.Max(0f, coyoteTime);
+            groundCheckDistance = Mathf.Max(0.01f, groundCheckDistance);
+            wallCheckDistance = Mathf.Max(0.01f, wallCheckDistance);
+            minGroundNormalY = Mathf.Clamp01(minGroundNormalY);
+
+            if (groundLayer.value == 0)
+            {
+                groundLayer = LayerMask.GetMask("Ground");
+            }
+
+            if (Application.isPlaying)
+            {
+                ConfigureGroundFilter();
+            }
         }
 
         /// <summary>
