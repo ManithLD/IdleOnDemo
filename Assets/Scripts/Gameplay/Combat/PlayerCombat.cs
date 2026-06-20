@@ -22,6 +22,8 @@ namespace IdleOnDemo.Gameplay.Player
 
         [SerializeField] private float attackRange = 1.5f;
         [SerializeField] private float attackCooldown = 0.5f;
+        [SerializeField] private float autoTargetYTolerance = 1.5f;
+        [SerializeField] private float directionFlipDeadZone = 0.1f;
         [SerializeField] private int attackDamage = 25;
         [SerializeField] private PlayerStats playerStats;
         [SerializeField] private LayerMask attackLayerMask;
@@ -31,12 +33,18 @@ namespace IdleOnDemo.Gameplay.Player
 
         private Coroutine activeAttackRoutine;
         private float nextAttackTime;
+        private EnemyController currentAutoTarget;
 
         public bool IsAutoAttackEnabled => autoAttackEnabled;
 
         public void ToggleAutoAttack()
         {
             autoAttackEnabled = !autoAttackEnabled;
+
+            if (!autoAttackEnabled)
+            {
+                ClearAutoTarget();
+            }
         }
 
         /// <summary>
@@ -78,6 +86,8 @@ namespace IdleOnDemo.Gameplay.Player
                 playerController.SetSimulatedInput(0f);
                 playerController.IsAttacking = false;
             }
+
+            ClearAutoTarget();
         }
 
         /// <summary>
@@ -96,13 +106,30 @@ namespace IdleOnDemo.Gameplay.Player
                 return;
             }
 
-            EnemyController target = autoAttackEnabled
-                ? FindNearestLivingEnemy()
-                : playerTargeting != null ? playerTargeting.CurrentTarget : null;
+            EnemyController target;
+            if (autoAttackEnabled)
+            {
+                if (!IsValidAutoTarget(currentAutoTarget))
+                {
+                    currentAutoTarget = FindNearestLivingEnemy();
+                }
+
+                target = currentAutoTarget;
+            }
+            else
+            {
+                ClearAutoTarget();
+                target = playerTargeting != null ? playerTargeting.CurrentTarget : null;
+            }
 
             if (target == null || target.IsDead)
             {
                 playerController.SetSimulatedInput(0f);
+                if (autoAttackEnabled)
+                {
+                    ClearAutoTarget();
+                }
+
                 return;
             }
 
@@ -178,18 +205,29 @@ namespace IdleOnDemo.Gameplay.Player
         }
 
         /// <summary>
-        /// Finds the nearest non-dead enemy in the active scene.
+        /// Finds the nearest non-dead enemy on the player's current floor/platform.
         /// </summary>
         /// <returns>The closest living <see cref="EnemyController"/>, or <c>null</c> if none exist.</returns>
         private EnemyController FindNearestLivingEnemy()
         {
+            if (IsValidAutoTarget(currentAutoTarget))
+            {
+                return currentAutoTarget;
+            }
+
             EnemyController nearestEnemy = null;
             float nearestDistanceSqr = float.MaxValue;
+            float playerY = transform.position.y;
             EnemyController[] enemies = Object.FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude);
 
             foreach (EnemyController enemy in enemies)
             {
-                if (enemy == null || enemy.IsDead)
+                if (!IsValidAutoTarget(enemy))
+                {
+                    continue;
+                }
+
+                if (Mathf.Abs(enemy.transform.position.y - playerY) > autoTargetYTolerance)
                 {
                     continue;
                 }
@@ -205,6 +243,16 @@ namespace IdleOnDemo.Gameplay.Player
             }
 
             return nearestEnemy;
+        }
+
+        private bool IsValidAutoTarget(EnemyController target)
+        {
+            return target != null && !target.IsDead;
+        }
+
+        private void ClearAutoTarget()
+        {
+            currentAutoTarget = null;
         }
 
         /// <summary>
@@ -226,8 +274,13 @@ namespace IdleOnDemo.Gameplay.Player
 
         private float GetDirectionToTarget(EnemyController target)
         {
-            float direction = Mathf.Sign(target.transform.position.x - transform.position.x);
-            return Mathf.Approximately(direction, 0f) ? playerController.FacingDirection : direction;
+            float xDelta = target.transform.position.x - transform.position.x;
+            if (Mathf.Abs(xDelta) <= directionFlipDeadZone)
+            {
+                return playerController.FacingDirection;
+            }
+
+            return Mathf.Sign(xDelta);
         }
 
         /// <summary>
@@ -237,6 +290,8 @@ namespace IdleOnDemo.Gameplay.Player
         {
             attackRange = Mathf.Max(0.1f, attackRange);
             attackCooldown = Mathf.Max(0.01f, attackCooldown);
+            autoTargetYTolerance = Mathf.Max(0f, autoTargetYTolerance);
+            directionFlipDeadZone = Mathf.Max(0f, directionFlipDeadZone);
             attackDamage = Mathf.Max(1, attackDamage);
         }
 

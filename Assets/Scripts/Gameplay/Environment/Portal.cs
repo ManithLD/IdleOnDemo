@@ -138,6 +138,17 @@ namespace IdleOnDemo.Gameplay.Environment
                 return;
             }
 
+            // Convert mouse screen position to game world coordinates
+            Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+            Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+
+            // Only proceed if the mouse is actually hovering over this portal's collider
+            Collider2D portalCollider = GetComponent<Collider2D>();
+            if (portalCollider != null && !portalCollider.OverlapPoint(mouseWorldPosition))
+            {
+                return;
+            }
+
             SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
             if (transitionManager == null)
             {
