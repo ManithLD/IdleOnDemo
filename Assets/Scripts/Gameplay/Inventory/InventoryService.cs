@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -9,11 +10,14 @@ namespace IdleOnDemo.Gameplay.Inventory
     /// </summary>
     public sealed class InventoryService : MonoBehaviour
     {
+        public const int MaxSlots = 15;
+
         private static InventoryService instance;
         private readonly Dictionary<ItemData, int> items = new();
 
         public static InventoryService Instance => instance;
         public IReadOnlyDictionary<ItemData, int> Items => items;
+        public event Action OnInventoryChanged;
 
         private void Awake()
         {
@@ -31,21 +35,28 @@ namespace IdleOnDemo.Gameplay.Inventory
         /// </summary>
         /// <param name="item">The item asset to add.</param>
         /// <param name="amount">The quantity to add.</param>
-        public void AddItem(ItemData item, int amount = 1)
+        public bool AddItem(ItemData item, int amount = 1)
         {
             if (item == null || amount <= 0)
             {
-                return;
+                return false;
             }
 
             if (!item.IsStackable && items.ContainsKey(item))
             {
-                return;
+                return false;
+            }
+
+            if (!items.ContainsKey(item) && items.Count >= MaxSlots)
+            {
+                Debug.LogWarning("Inventory Full");
+                return false;
             }
 
             int currentAmount = items.TryGetValue(item, out int existingAmount) ? existingAmount : 0;
             items[item] = item.IsStackable ? currentAmount + amount : 1;
-            LogInventoryState();
+            OnInventoryChanged?.Invoke();
+            return true;
         }
 
         public bool TryGetQuantity(ItemData item, out int quantity)

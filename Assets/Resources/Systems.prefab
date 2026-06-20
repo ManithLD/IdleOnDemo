@@ -1566,6 +1566,7 @@ GameObject:
   - component: {fileID: 5291134930286093039}
   - component: {fileID: 543128855793964973}
   - component: {fileID: 3607377263367486582}
+  - component: {fileID: 4189663639987736659}
   m_Layer: 0
   m_Name: Inventory_Scroll_Container
   m_TagString: Untagged
@@ -1661,6 +1662,35 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4189663639987736659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065276892778261430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b32027a27cdf454bb9ebc5ccc4ac069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.UI.InventoryUIController
+  uiSlots:
+  - {fileID: 10921599154204244}
+  - {fileID: 8958648466927351672}
+  - {fileID: 790376462068247874}
+  - {fileID: 1107241721953359221}
+  - {fileID: 1028025489394849898}
+  - {fileID: 580243485332948428}
+  - {fileID: 8021838798117038392}
+  - {fileID: 6226414932753359632}
+  - {fileID: 8143094601515067301}
+  - {fileID: 6668491032039848493}
+  - {fileID: 2614791494437831271}
+  - {fileID: 8052289429171286583}
+  - {fileID: 7254238857737202200}
+  - {fileID: 2107884942716183040}
+  - {fileID: 1374424252651811762}
+  itemUIPrefab: {fileID: 8167680805691758873, guid: d6c0e29ec31aff3479883a53af24ed4d, type: 3}
 --- !u!1 &2179895304249973173
 GameObject:
   m_ObjectHideFlags: 0

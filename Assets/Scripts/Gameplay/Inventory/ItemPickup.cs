@@ -58,8 +58,10 @@ namespace IdleOnDemo.Gameplay.Inventory
                 return;
             }
 
-            InventoryService.Instance.AddItem(item, quantity);
-            Destroy(gameObject);
+            if (InventoryService.Instance.AddItem(item, quantity))
+            {
+                Destroy(gameObject);
+            }
         }
 
         /// <summary>
