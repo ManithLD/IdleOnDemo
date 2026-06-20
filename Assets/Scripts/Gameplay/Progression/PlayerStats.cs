@@ -26,6 +26,7 @@ namespace IdleOnDemo.Gameplay.Progression
         public event Action<int> OnLevelUp;
         public event Action<int, int> OnXPUpdated;
         public event Action<int, int> OnHPUpdated;
+        public event Action<int> OnCoinsUpdated;
 
         private void Awake()
         {
@@ -87,6 +88,7 @@ namespace IdleOnDemo.Gameplay.Progression
             }
 
             coins += amount;
+            OnCoinsUpdated?.Invoke(coins);
         }
 
         private void NormalizeStats()
