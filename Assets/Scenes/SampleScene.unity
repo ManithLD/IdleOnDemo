@@ -2538,7 +2538,7 @@ MonoBehaviour:
     damageMultiplier: 1.25
     cooldown: 0.625
   - attackType: 3
-    damageMultiplier: 1.5
+    damageMultiplier: 1000
     cooldown: 0.9
   playerStats: {fileID: 0}
   attackLayerMask:

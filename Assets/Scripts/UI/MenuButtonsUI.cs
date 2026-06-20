@@ -26,6 +26,10 @@ namespace IdleOnDemo.UI
         [SerializeField] private Sprite autoIconOffSprite;
         [SerializeField] private Sprite autoIconOnSprite;
 
+        [Header("Containers")]
+        [SerializeField] private GameObject attacksButtonContainer;
+        [SerializeField] private GameObject mainMenuButtonContainer;
+
         private bool isAttacksEnabled = false;
 
         /// <summary>
@@ -111,6 +115,16 @@ namespace IdleOnDemo.UI
             if (attacksButtonBackgroundImage != null)
             {
                 attacksButtonBackgroundImage.sprite = isToggled ? buttonOnSprite : buttonOffSprite;
+            }
+
+            if (attacksButtonContainer != null)
+            {
+                attacksButtonContainer.SetActive(isToggled);
+            }
+
+            if (mainMenuButtonContainer != null)
+            {
+                mainMenuButtonContainer.SetActive(!isToggled);
             }
         }
 
