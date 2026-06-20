@@ -84,10 +84,7 @@ namespace IdleOnDemo.Gameplay.Player
                 return;
             }
 
-            UnsubscribeFromCurrentTarget();
-            CurrentTarget = target;
-            currentTarget.OnDeath += HandleCurrentTargetDeath;
-            OnTargetChanged?.Invoke(currentTarget);
+            SetCurrentTarget(target);
         }
 
         public void ClearTarget()
@@ -97,9 +94,7 @@ namespace IdleOnDemo.Gameplay.Player
                 return;
             }
 
-            UnsubscribeFromCurrentTarget();
-            CurrentTarget = null;
-            OnTargetChanged?.Invoke(null);
+            SetCurrentTarget(null);
         }
 
         private void ConfigureTargetFilter()
@@ -179,7 +174,12 @@ namespace IdleOnDemo.Gameplay.Player
         {
             if (currentTarget == null)
             {
-                CurrentTarget = null;
+                if (!ReferenceEquals(currentTarget, null))
+                {
+                    currentTarget = null;
+                    OnTargetChanged?.Invoke(null);
+                }
+
                 return;
             }
 
@@ -187,6 +187,30 @@ namespace IdleOnDemo.Gameplay.Player
             {
                 ClearTarget();
             }
+        }
+
+        private void SetCurrentTarget(EnemyController target)
+        {
+            if (currentTarget == target)
+            {
+                return;
+            }
+
+            if (currentTarget != null)
+            {
+                currentTarget.OnDeath -= HandleCurrentTargetDeath;
+                currentTarget.SetSelected(false);
+            }
+
+            CurrentTarget = target;
+
+            if (currentTarget != null)
+            {
+                currentTarget.SetSelected(true);
+                currentTarget.OnDeath += HandleCurrentTargetDeath;
+            }
+
+            OnTargetChanged?.Invoke(currentTarget);
         }
 
         private void UnsubscribeFromCurrentTarget()

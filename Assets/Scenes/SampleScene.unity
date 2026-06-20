@@ -1169,6 +1169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Environment.Portal
   targetSceneName: TownScene
   targetSpawnPointID: Town_Main_Arrival
+  requiredQuestID: 
 --- !u!61 &774611548
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1432,7 +1433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f91358898ae36e4bbe9e0d334475477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Environment.EnemySpawnerZone
-  enemyPrefab: {fileID: 525100383769064423, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
+  enemyPrefab: {fileID: 6087770968638603241, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
   spawnCooldown: 2
   maxEnemies: 10
 --- !u!61 &841123129
@@ -2314,6 +2315,7 @@ GameObject:
   - component: {fileID: 1170070131}
   - component: {fileID: 1170070133}
   - component: {fileID: 1170070134}
+  - component: {fileID: 1170070135}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -2522,13 +2524,13 @@ MonoBehaviour:
   autoAttackEnabled: 0
   attackRange: 1.5
   attackCooldown: 0.5
-  closeTargetGraceDistance: 0.25
   attackDamage: 25
   playerStats: {fileID: 0}
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 256
   playerController: {fileID: 1170070130}
+  playerTargeting: {fileID: 0}
   animator: {fileID: 1170070131}
 --- !u!114 &1170070134
 MonoBehaviour:
@@ -2542,14 +2544,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26214e22d71465e4190914c7cc1d263c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Progression.PlayerStats
-  level: 1
-  currentXP: 0
-  xpToNextLevel: 100
-  baseXPToNextLevel: 100
   maxHP: 100
   currentHP: 100
   damage: 25
   coins: 0
+--- !u!114 &1170070135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170070125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f699d5041fc4c740899912045e9effe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Player.PlayerTargeting
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  clickFallbackRadius: 0.05
 --- !u!1 &1199239220
 GameObject:
   m_ObjectHideFlags: 0
@@ -3813,7 +3827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f91358898ae36e4bbe9e0d334475477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Environment.EnemySpawnerZone
-  enemyPrefab: {fileID: 525100383769064423, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
+  enemyPrefab: {fileID: 6087770968638603241, guid: ad074888d84a85d4fa419ab6ba299b92, type: 3}
   spawnCooldown: 2
   maxEnemies: 5
 --- !u!61 &1924660311

@@ -73,6 +73,8 @@ namespace IdleOnDemo.Gameplay.Enemies
         /// <value><c>true</c> after lethal damage is received.</value>
         public bool IsDead => currentState == EnemyState.Dead;
 
+        public bool IsSelected { get; private set; }
+
         /// <summary>
         /// Raised whenever the enemy health total changes.
         /// </summary>
@@ -82,6 +84,8 @@ namespace IdleOnDemo.Gameplay.Enemies
         /// Raised when the enemy transitions into the dead state.
         /// </summary>
         public event Action OnDeath;
+
+        public event Action<bool> OnSelectedChanged;
 
         /// <summary>
         /// Caches physics, animation, and health state required for roaming and combat.
@@ -123,6 +127,17 @@ namespace IdleOnDemo.Gameplay.Enemies
         {
             this.homeZone = homeZone;
             EnterPatrolWait();
+        }
+
+        public void SetSelected(bool selected)
+        {
+            if (IsSelected == selected)
+            {
+                return;
+            }
+
+            IsSelected = selected;
+            OnSelectedChanged?.Invoke(IsSelected);
         }
 
         /// <summary>
