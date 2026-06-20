@@ -30,7 +30,6 @@ namespace IdleOnDemo.Gameplay.Progression
         private void Awake()
         {
             NormalizeStats();
-            OnHPUpdated?.Invoke(currentHP, maxHP);
         }
 
         public int GetRequiredXP() => 10 + (CurrentLevel * 10);

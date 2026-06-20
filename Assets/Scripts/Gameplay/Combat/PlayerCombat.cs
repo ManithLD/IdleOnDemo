@@ -1,17 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using IdleOnDemo.Core.Interfaces;
 using IdleOnDemo.Gameplay.Enemies;
-using UnityEngine;
-using UnityEngine.InputSystem;
 using IdleOnDemo.Gameplay.Progression;
+using UnityEngine;
 
 namespace IdleOnDemo.Gameplay.Player
 {
     /// <summary>
-    /// Coordinates player attacks, including manual mouse-directed attacks and optional auto-attack steering.
+    /// Coordinates player attacks, using click-selected targets or optional nearest-enemy auto targeting.
     /// </summary>
-    [RequireComponent(typeof(PlayerController))]
+    [RequireComponent(typeof(PlayerController), typeof(PlayerTargeting))]
     public class PlayerCombat : MonoBehaviour
     {
         private static readonly int AttackHash = Animator.StringToHash("Attack");
@@ -19,19 +17,18 @@ namespace IdleOnDemo.Gameplay.Player
         /// <summary>
         /// Controls whether the player automatically approaches and attacks the nearest enemy.
         /// </summary>
-        /// <value><c>true</c> to use auto attack; <c>false</c> to require manual left-click attacks.</value>
+        /// <value><c>true</c> to use auto attack; <c>false</c> to use click-selected targets.</value>
         public bool autoAttackEnabled = false;
 
         [SerializeField] private float attackRange = 1.5f;
         [SerializeField] private float attackCooldown = 0.5f;
-        [SerializeField] private float closeTargetGraceDistance = 0.25f;
         [SerializeField] private int attackDamage = 25;
         [SerializeField] private PlayerStats playerStats;
         [SerializeField] private LayerMask attackLayerMask;
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private PlayerTargeting playerTargeting;
         [SerializeField] private Animator animator;
 
-        private readonly List<Collider2D> attackHits = new();
         private Coroutine activeAttackRoutine;
         private float nextAttackTime;
 
@@ -42,12 +39,20 @@ namespace IdleOnDemo.Gameplay.Player
         {
             playerController ??= GetComponent<PlayerController>();
             playerStats ??= GetComponent<PlayerStats>();
+            playerTargeting ??= GetComponent<PlayerTargeting>();
             animator ??= GetComponentInChildren<Animator>();
+
+            if (playerTargeting == null)
+            {
+                playerTargeting = gameObject.AddComponent<PlayerTargeting>();
+            }
 
             if (attackLayerMask.value == 0)
             {
                 attackLayerMask = LayerMask.GetMask("Enemy");
             }
+
+            playerTargeting.SetTargetLayerMask(attackLayerMask);
         }
 
         /// <summary>
@@ -55,17 +60,21 @@ namespace IdleOnDemo.Gameplay.Player
         /// </summary>
         private void OnDisable()
         {
+            if (activeAttackRoutine != null)
+            {
+                StopCoroutine(activeAttackRoutine);
+                activeAttackRoutine = null;
+            }
+
             if (playerController != null)
             {
                 playerController.SetSimulatedInput(0f);
                 playerController.IsAttacking = false;
             }
-
-            activeAttackRoutine = null;
         }
 
         /// <summary>
-        /// Routes combat behavior between auto attack and manual attack while respecting grounded and attack-lock constraints.
+        /// Chooses a target source, then routes both manual and auto attack through one pursue-and-attack path.
         /// </summary>
         private void Update()
         {
@@ -80,33 +89,27 @@ namespace IdleOnDemo.Gameplay.Player
                 return;
             }
 
-            if (autoAttackEnabled)
-            {
-                UpdateAutoAttack();
-                return;
-            }
+            EnemyController target = autoAttackEnabled
+                ? FindNearestLivingEnemy()
+                : playerTargeting != null ? playerTargeting.CurrentTarget : null;
 
-            UpdateManualAttack();
-        }
-
-        /// <summary>
-        /// Finds the nearest live enemy, moves toward it, and starts an attack when in range.
-        /// </summary>
-        private void UpdateAutoAttack()
-        {
-            EnemyController target = FindNearestLivingEnemy();
-            if (target == null)
+            if (target == null || target.IsDead)
             {
                 playerController.SetSimulatedInput(0f);
                 return;
             }
 
+            PursueAndAttack(target);
+        }
+
+        /// <summary>
+        /// Moves toward the target until in range, then starts attacks on cooldown.
+        /// </summary>
+        /// <param name="target">The live enemy to pursue and attack.</param>
+        private void PursueAndAttack(EnemyController target)
+        {
+            float direction = GetDirectionToTarget(target);
             float distance = Vector2.Distance(transform.position, target.transform.position);
-            float direction = Mathf.Sign(target.transform.position.x - transform.position.x);
-            if (Mathf.Approximately(direction, 0f))
-            {
-                direction = playerController.FacingDirection;
-            }
 
             if (distance > attackRange)
             {
@@ -116,33 +119,17 @@ namespace IdleOnDemo.Gameplay.Player
 
             playerController.SetSimulatedInput(0f);
             playerController.FaceDirection(direction);
-            TryStartAttack(direction);
-        }
-
-        /// <summary>
-        /// Handles left-click manual attacks and snaps the player to face the mouse before attacking.
-        /// </summary>
-        private void UpdateManualAttack()
-        {
-            playerController.SetSimulatedInput(0f);
-
-            if (Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                return;
-            }
-
-            float attackDirection = GetManualAttackDirection();
-            playerController.FaceDirection(attackDirection);
-            TryStartAttack(attackDirection);
+            TryStartAttack(target, direction);
         }
 
         /// <summary>
         /// Starts the attack coroutine if cooldown, grounded state, and current attack state allow it.
         /// </summary>
+        /// <param name="target">The enemy locked for this swing.</param>
         /// <param name="direction">The horizontal attack direction, where negative is left and positive is right.</param>
-        private void TryStartAttack(float direction)
+        private void TryStartAttack(EnemyController target, float direction)
         {
-            if (activeAttackRoutine != null || Time.time < nextAttackTime)
+            if (target == null || target.IsDead || activeAttackRoutine != null || Time.time < nextAttackTime)
             {
                 return;
             }
@@ -154,15 +141,16 @@ namespace IdleOnDemo.Gameplay.Player
 
             direction = Mathf.Approximately(direction, 0f) ? playerController.FacingDirection : Mathf.Sign(direction);
             nextAttackTime = Time.time + attackCooldown;
-            activeAttackRoutine = StartCoroutine(AttackRoutine(direction));
+            activeAttackRoutine = StartCoroutine(AttackRoutine(target, direction));
         }
 
         /// <summary>
-        /// Locks movement, triggers the attack animation, applies damage, and releases the player after cooldown.
+        /// Locks movement, triggers the attack animation, damages the locked target, and releases the player after cooldown.
         /// </summary>
-        /// <param name="direction">The horizontal direction used for facing and hit filtering.</param>
+        /// <param name="target">The enemy locked when the swing starts.</param>
+        /// <param name="direction">The horizontal direction used for facing and knockback.</param>
         /// <returns>An IEnumerator used by Unity's coroutine scheduler.</returns>
-        private IEnumerator AttackRoutine(float direction)
+        private IEnumerator AttackRoutine(EnemyController target, float direction)
         {
             playerController.SetSimulatedInput(0f);
             playerController.FaceDirection(direction);
@@ -174,7 +162,7 @@ namespace IdleOnDemo.Gameplay.Player
                 animator.SetTrigger(AttackHash);
             }
 
-            TryDamageTarget(direction);
+            TryDamageTarget(target, direction);
 
             yield return new WaitForSeconds(attackCooldown);
 
@@ -213,103 +201,26 @@ namespace IdleOnDemo.Gameplay.Player
         }
 
         /// <summary>
-        /// Resolves manual attack direction from the mouse position in world space.
+        /// Applies direct damage to the already-selected target.
         /// </summary>
-        /// <returns><c>1</c> when the mouse is right of the player, <c>-1</c> when left, or the current facing if no camera exists.</returns>
-        private float GetManualAttackDirection()
+        /// <param name="target">The target locked for the current swing.</param>
+        /// <param name="direction">The horizontal direction used for knockback.</param>
+        private void TryDamageTarget(EnemyController target, float direction)
         {
-            Camera mainCamera = Camera.main;
-            if (mainCamera == null || Mouse.current == null)
+            if (target == null || target.IsDead)
             {
-                return playerController.FacingDirection;
+                return;
             }
 
-            Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
-            Vector3 screenPoint = new Vector3(
-                mouseScreenPosition.x,
-                mouseScreenPosition.y,
-                Mathf.Abs(mainCamera.transform.position.z - transform.position.z));
-            Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(screenPoint);
-
-            if (Mathf.Approximately(mouseWorldPosition.x, transform.position.x))
-            {
-                return playerController.FacingDirection;
-            }
-
-            return mouseWorldPosition.x > transform.position.x ? 1f : -1f;
-        }
-
-        /// <summary>
-        /// Finds and damages the nearest damageable target in front of the player.
-        /// </summary>
-        /// <param name="direction">The horizontal facing direction used to filter targets.</param>
-        private void TryDamageTarget(float direction)
-        {
-            Vector2 origin = transform.position;
-            ContactFilter2D attackFilter = new ContactFilter2D { useTriggers = false };
-            attackFilter.SetLayerMask(attackLayerMask);
-            attackHits.Clear();
-            int hitCount = Physics2D.OverlapCircle(origin, attackRange, attackFilter, attackHits);
-
-            IDamageable target = null;
-            float nearestDistanceSqr = float.MaxValue;
-
-            for (int i = 0; i < hitCount; i++)
-            {
-                Collider2D hit = attackHits[i];
-                if (hit == null)
-                {
-                    continue;
-                }
-
-                IDamageable damageable = hit.GetComponentInParent<IDamageable>();
-                if (damageable == null || damageable.IsDead)
-                {
-                    continue;
-                }
-
-                if (!IsValidAttackHit(hit, origin, direction, out float distanceSqr))
-                {
-                    continue;
-                }
-
-                if (distanceSqr >= nearestDistanceSqr)
-                {
-                    continue;
-                }
-
-                nearestDistanceSqr = distanceSqr;
-                target = damageable;
-            }
-
+            IDamageable damageable = target;
             int damageAmount = playerStats != null ? playerStats.Damage : attackDamage;
-            target?.TakeDamage(damageAmount, Vector2.right * direction, 0f);
+            damageable.TakeDamage(damageAmount, Vector2.right * direction, 0f);
         }
 
-        /// <summary>
-        /// Checks whether a target collider is inside the active attack direction, including very close overlap cases.
-        /// </summary>
-        /// <param name="hit">The candidate target collider found by the attack range query.</param>
-        /// <param name="origin">The player world position used as the attack origin.</param>
-        /// <param name="direction">The horizontal attack direction, where negative is left and positive is right.</param>
-        /// <param name="distanceSqr">The squared distance used to choose the nearest valid target.</param>
-        /// <returns><c>true</c> when the collider should be considered a valid attack target.</returns>
-        private bool IsValidAttackHit(Collider2D hit, Vector2 origin, float direction, out float distanceSqr)
+        private float GetDirectionToTarget(EnemyController target)
         {
-            Vector2 closestPoint = hit.bounds.ClosestPoint(origin);
-            Vector2 toClosestPoint = closestPoint - origin;
-            bool isCloseOrOverlapping = hit.bounds.Contains(origin) ||
-                toClosestPoint.sqrMagnitude <= closeTargetGraceDistance * closeTargetGraceDistance;
-
-            if (!isCloseOrOverlapping && toClosestPoint.x * direction <= 0.01f)
-            {
-                distanceSqr = float.MaxValue;
-                return false;
-            }
-
-            Vector2 targetCenterOffset = (Vector2)hit.bounds.center - origin;
-            distanceSqr = isCloseOrOverlapping ? targetCenterOffset.sqrMagnitude : toClosestPoint.sqrMagnitude;
-            return true;
+            float direction = Mathf.Sign(target.transform.position.x - transform.position.x);
+            return Mathf.Approximately(direction, 0f) ? playerController.FacingDirection : direction;
         }
 
         /// <summary>
@@ -319,7 +230,6 @@ namespace IdleOnDemo.Gameplay.Player
         {
             attackRange = Mathf.Max(0.1f, attackRange);
             attackCooldown = Mathf.Max(0.01f, attackCooldown);
-            closeTargetGraceDistance = Mathf.Max(0f, closeTargetGraceDistance);
             attackDamage = Mathf.Max(1, attackDamage);
         }
 
@@ -330,6 +240,16 @@ namespace IdleOnDemo.Gameplay.Player
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, attackRange);
+
+            PlayerTargeting targeting = playerTargeting != null ? playerTargeting : GetComponent<PlayerTargeting>();
+            EnemyController target = targeting != null ? targeting.CurrentTarget : null;
+            if (target == null)
+            {
+                return;
+            }
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, target.transform.position);
         }
     }
 }
