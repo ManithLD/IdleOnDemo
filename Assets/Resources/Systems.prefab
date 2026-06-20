@@ -719,6 +719,53 @@ MonoBehaviour:
   defaultAttackType: 0
   buttonOffSprite: {fileID: 3735604927057173224, guid: dfb4e425061c9ba469a45d5caed4a1fb, type: 3}
   buttonOnSprite: {fileID: 3412908974078662053, guid: dfb4e425061c9ba469a45d5caed4a1fb, type: 3}
+--- !u!1 &713401789609555398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8275142073075381135}
+  - component: {fileID: 6892587179489057693}
+  m_Layer: 0
+  m_Name: DamagePopupManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8275142073075381135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713401789609555398}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.96307, y: -2.25595, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4989035403357816671}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6892587179489057693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713401789609555398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8343d4303ff700f42b749cf59133face, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Combat.DamagePopupManager
+  popupPrefab: {fileID: 1466091242613430462, guid: 12ba83421f8abc34385a4d8981fad01d, type: 3}
+  targetCanvas: {fileID: 1642566952604360920}
+  screenOffset: {x: 0, y: 16}
 --- !u!1 &877266503085445573
 GameObject:
   m_ObjectHideFlags: 0
@@ -1702,7 +1749,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4989035403357816671}
-  - component: {fileID: 3696377411523939766}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -1724,27 +1770,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4230303281914753309}
+  - {fileID: 8275142073075381135}
   - {fileID: 4460758589934326767}
   - {fileID: 2376622031275606355}
   - {fileID: 3928154136750909726}
   - {fileID: 4746299752627169220}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3696377411523939766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2179895304249973173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8343d4303ff700f42b749cf59133face, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Combat.DamagePopupManager
-  popupPrefab: {fileID: 1466091242613430462, guid: 12ba83421f8abc34385a4d8981fad01d, type: 3}
-  targetCanvas: {fileID: 1642566952604360920}
-  screenOffset: {x: 0, y: 16}
 --- !u!1 &2244330639522945728
 GameObject:
   m_ObjectHideFlags: 0
