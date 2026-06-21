@@ -1071,6 +1071,9 @@ MonoBehaviour:
   targetSceneName: TownScene
   targetSpawnPointID: Town_Main_Arrival
   requiredQuestID: 
+  objectiveIDs:
+  - enter_initial_portal
+  - return_to_town
 --- !u!61 &774611548
 BoxCollider2D:
   m_ObjectHideFlags: 0

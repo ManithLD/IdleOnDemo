@@ -2692,7 +2692,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -147, y: -11}
+  m_AnchoredPosition: {x: -198.35, y: -39}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1669457996230012421
@@ -2726,7 +2726,7 @@ MonoBehaviour:
   m_text: Quest Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2789,7 +2789,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -84.98392, y: 0, z: -74.72717, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3255,6 +3255,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Quests.QuestManager
   questDefinitions: []
+  mainQuestChain:
+  - {fileID: 11400000, guid: de1c6bead758bfb45ba205ba9e0df357, type: 2}
+  - {fileID: 11400000, guid: 0062f613e66f6ec49a2f97f6a7e2e855, type: 2}
+  - {fileID: 11400000, guid: f15120f03b09f8b4ca9151c8d5398da0, type: 2}
+  - {fileID: 11400000, guid: 22ad71e938f1cb740a8076248824383a, type: 2}
+  - {fileID: 11400000, guid: 7bbc39ce120da4d4eb812723e1021b31, type: 2}
+  - {fileID: 11400000, guid: cbeb6da794661f443a46fdafb9f1fa4b, type: 2}
+  - {fileID: 11400000, guid: 3a01f9adca1e5e04bb917b70e5f0e08a, type: 2}
 --- !u!1 &3959104096372055075
 GameObject:
   m_ObjectHideFlags: 0
@@ -5549,8 +5557,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -147, y: -65}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -198.35, y: -117.52411}
+  m_SizeDelta: {x: 200, y: 107.0482}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8501480246025099791
 CanvasRenderer:
@@ -5583,7 +5591,7 @@ MonoBehaviour:
   m_text: Quest Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5607,8 +5615,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5646,7 +5654,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -68.22949, y: 0, z: -68.22931, w: 0}
+  m_margin: {x: -93.13861, y: 0, z: -103.39526, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6188,6 +6196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5994509062287230206}
+  - component: {fileID: 7630985530728287303}
   m_Layer: 0
   m_Name: Quest_Container
   m_TagString: Untagged
@@ -6217,6 +6226,21 @@ RectTransform:
   m_AnchoredPosition: {x: -50, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7630985530728287303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640226629969625720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9878a31ae300246a8155c980b32ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.UI.QuestContainerUI
+  questContainerRoot: {fileID: 7640226629969625720}
+  titleText: {fileID: 7064712050169203647}
+  descriptionText: {fileID: 498782316094118506}
 --- !u!1 &7652402472147667221
 GameObject:
   m_ObjectHideFlags: 0
@@ -6506,8 +6530,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -200, y: -100}
-  m_SizeDelta: {x: 400, y: 200}
+  m_AnchoredPosition: {x: -248.35284, y: -144.68982}
+  m_SizeDelta: {x: 496.7058, y: 289.3797}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &390394219541206486
 CanvasRenderer:

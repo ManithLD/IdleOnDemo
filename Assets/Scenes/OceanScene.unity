@@ -563,6 +563,8 @@ MonoBehaviour:
   targetSceneName: TownScene
   targetSpawnPointID: Town_Left_Arrival
   requiredQuestID: 
+  objectiveIDs:
+  - return_to_town
 --- !u!61 &712187261
 BoxCollider2D:
   m_ObjectHideFlags: 0

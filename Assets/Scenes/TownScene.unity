@@ -250,6 +250,7 @@ MonoBehaviour:
   targetSceneName: InitialSlimeScene
   targetSpawnPointID: SampleScene_FromTown
   requiredQuestID: 
+  objectiveIDs: []
 --- !u!61 &30638890
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -97598,6 +97599,8 @@ MonoBehaviour:
   targetSceneName: OceanScene
   targetSpawnPointID: Ocean_Main_Arrival
   requiredQuestID: quest_noob_slimes
+  objectiveIDs:
+  - enter_new_portal
 --- !u!61 &712187261
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -98412,6 +98415,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Environment.NPCInteractable
   targetQuest: {fileID: 11400000, guid: f15120f03b09f8b4ca9151c8d5398da0, type: 2}
+  objectiveIDs:
+  - talk_shadow
 --- !u!61 &1445967435
 BoxCollider2D:
   m_ObjectHideFlags: 0

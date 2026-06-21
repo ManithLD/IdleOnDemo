@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bbb5476fc02cd547b4994b26703b8f3, type: 3}
   m_Name: Book
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Inventory.ItemData
-  itemID: 
-  displayName: 
+  itemID: book
+  displayName: Spell Book
   icon: {fileID: 8264674673122941701, guid: 17d29cd010120264eb368b040230433f, type: 3}
-  dropPrefab: {fileID: 0}
+  dropPrefab: {fileID: 194919344435972872, guid: c71de3b52f8867d47b53db2f97207f33, type: 3}
   isStackable: 1

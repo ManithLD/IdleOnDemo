@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using IdleOnDemo.Gameplay.Player;
 using IdleOnDemo.Gameplay.Quests;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace IdleOnDemo.Gameplay.Environment
     public sealed class NPCInteractable : MonoBehaviour
     {
         [SerializeField] private QuestData targetQuest;
+        [SerializeField] private List<string> objectiveIDs = new List<string>();
 
         private Collider2D npcCollider;
         private bool isPlayerInRange;
@@ -37,14 +39,20 @@ namespace IdleOnDemo.Gameplay.Environment
 
         private void TryInteract()
         {
-            if (lastInteractionFrame == Time.frameCount || !isPlayerInRange || targetQuest == null)
+            if (lastInteractionFrame == Time.frameCount || !isPlayerInRange)
             {
                 return;
             }
 
             lastInteractionFrame = Time.frameCount;
+            if (objectiveIDs != null && objectiveIDs.Count > 0)
+            {
+                ReportObjectiveProgress();
+                return;
+            }
+
             QuestManager questManager = QuestManager.Instance;
-            if (questManager == null)
+            if (questManager == null || targetQuest == null)
             {
                 return;
             }
@@ -77,6 +85,22 @@ namespace IdleOnDemo.Gameplay.Environment
                 else
                 {
                     Debug.Log("Reward already claimed.");
+                }
+            }
+        }
+
+        private void ReportObjectiveProgress()
+        {
+            if (QuestManager.Instance == null || objectiveIDs == null)
+            {
+                return;
+            }
+
+            foreach (string id in objectiveIDs)
+            {
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    QuestManager.Instance.RegisterObjectiveProgress(id);
                 }
             }
         }

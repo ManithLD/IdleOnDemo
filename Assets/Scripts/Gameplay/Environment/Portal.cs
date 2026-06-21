@@ -1,5 +1,6 @@
 using IdleOnDemo.Core;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using IdleOnDemo.Gameplay.Player;
@@ -16,6 +17,7 @@ namespace IdleOnDemo.Gameplay.Environment
         [SerializeField] private string targetSceneName;
         [SerializeField] private string targetSpawnPointID;
         [SerializeField] private string requiredQuestID;
+        [SerializeField] private List<string> objectiveIDs = new List<string>();
 
         private bool isPlayerInPortal;
         private Transform playerTransform;
@@ -163,6 +165,23 @@ namespace IdleOnDemo.Gameplay.Environment
             }
 
             transitionManager.TransitionToScene(targetSceneName, targetSpawnPointID, playerTransform);
+            ReportObjectiveProgress();
+        }
+
+        private void ReportObjectiveProgress()
+        {
+            if (QuestManager.Instance == null || objectiveIDs == null)
+            {
+                return;
+            }
+
+            foreach (string id in objectiveIDs)
+            {
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    QuestManager.Instance.RegisterObjectiveProgress(id);
+                }
+            }
         }
 
         /// <summary>

@@ -9,12 +9,16 @@ namespace IdleOnDemo.Gameplay.Quests
     public sealed class QuestData : ScriptableObject
     {
         [SerializeField] private string questID;
+        [SerializeField] private string questTitle;
+        [SerializeField] private string questDescription;
         [SerializeField] private string targetObjectiveID;
         [SerializeField] private int requiredAmount = 1;
         [SerializeField] private int coinReward;
         [SerializeField] private int xpReward;
 
         public string QuestID => questID;
+        public string QuestTitle => questTitle;
+        public string QuestDescription => questDescription;
         public string TargetObjectiveID => targetObjectiveID;
         public int RequiredAmount => requiredAmount;
         public int CoinReward => coinReward;

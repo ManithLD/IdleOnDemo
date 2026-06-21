@@ -15,15 +15,22 @@ namespace IdleOnDemo.Gameplay.Quests
 
         [SerializeField] private List<QuestData> questDefinitions = new List<QuestData>();
 
+        [Header("Main Story Chain")]
+        [SerializeField] private List<QuestData> mainQuestChain = new List<QuestData>();
+
         private Dictionary<string, QuestRuntimeState> questStates = new Dictionary<string, QuestRuntimeState>();
         private Dictionary<string, QuestData> questDefinitionsByID = new Dictionary<string, QuestData>();
+        private int currentChainIndex = -1;
 
         public static QuestManager Instance => instance;
+        public QuestData CurrentChainQuest { get; private set; }
+        public QuestRuntimeState CurrentChainQuestState { get; private set; }
 
         /// <summary>
         /// Raised whenever a quest runtime state changes.
         /// </summary>
         public event Action<QuestRuntimeState> OnQuestUpdated;
+        public event Action<QuestData, QuestRuntimeState> OnActiveChainQuestChanged;
 
         private void Awake()
         {
@@ -35,6 +42,14 @@ namespace IdleOnDemo.Gameplay.Quests
 
             instance = this;
             RebuildQuestDefinitionRegistry();
+        }
+
+        private void Start()
+        {
+            if (currentChainIndex < 0)
+            {
+                AdvanceToChainIndex(0);
+            }
         }
 
         public QuestRuntimeState GetQuestState(string questID)
@@ -118,6 +133,12 @@ namespace IdleOnDemo.Gameplay.Quests
             {
                 OnQuestUpdated?.Invoke(state);
             }
+
+            if (CurrentChainQuestState != null && CurrentChainQuestState.IsCompleted && !CurrentChainQuestState.IsTurnedIn)
+            {
+                TurnInQuest(CurrentChainQuestState.QuestID);
+                AdvanceToChainIndex(currentChainIndex + 1);
+            }
         }
 
         public bool TurnInQuest(string questID)
@@ -187,9 +208,27 @@ namespace IdleOnDemo.Gameplay.Quests
             }
         }
 
+        private void AdvanceToChainIndex(int index)
+        {
+            if (mainQuestChain == null || mainQuestChain.Count == 0 || index < 0 || index >= mainQuestChain.Count)
+            {
+                CurrentChainQuest = null;
+                CurrentChainQuestState = null;
+                OnActiveChainQuestChanged?.Invoke(null, null);
+                return;
+            }
+
+            currentChainIndex = index;
+            CurrentChainQuest = mainQuestChain[index];
+            AcceptQuest(CurrentChainQuest);
+            CurrentChainQuestState = GetQuestState(CurrentChainQuest.QuestID);
+            OnActiveChainQuestChanged?.Invoke(CurrentChainQuest, CurrentChainQuestState);
+        }
+
         private void OnValidate()
         {
             questDefinitions.RemoveAll(quest => quest == null);
+            mainQuestChain?.RemoveAll(quest => quest == null);
         }
     }
 }
