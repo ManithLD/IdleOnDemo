@@ -10,7 +10,7 @@ namespace IdleOnDemo.Gameplay.Combat
     [RequireComponent(typeof(TextMeshProUGUI))]
     public sealed class DamagePopup : MonoBehaviour
     {
-        private const float Lifetime = 0.5f;
+        private const float Lifetime = 2f;
         private const float RiseDistance = 48f;
 
         [SerializeField] private TextMeshProUGUI damageText;

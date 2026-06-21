@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: maxHealth
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: coinReward
@@ -58,11 +58,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: df9316a735965a743ac01676436340a4, type: 2}
     - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.z
@@ -70,11 +70,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7086819222810318465, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7086819222810318465, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7086819222810318465, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalPosition.x

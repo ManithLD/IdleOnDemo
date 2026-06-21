@@ -12,6 +12,7 @@ namespace IdleOnDemo.Gameplay.Combat
         [SerializeField] private DamagePopup popupPrefab;
         [SerializeField] private Canvas targetCanvas;
         [SerializeField] private Vector2 screenOffset = new Vector2(0f, 16f);
+        [SerializeField] private Vector2 randomizationJitter = new Vector2(30f, 15f);
 
         private static DamagePopupManager instance;
 
@@ -92,13 +93,15 @@ namespace IdleOnDemo.Gameplay.Combat
             DamagePopup popup = Instantiate(popupPrefab, targetCanvas.transform);
             RectTransform popupTransform = popup.GetComponent<RectTransform>();
             RectTransform canvasTransform = targetCanvas.transform as RectTransform;
+            Vector2 randomJitter = new Vector2(Random.Range(-randomizationJitter.x, randomizationJitter.x), Random.Range(-randomizationJitter.y, randomizationJitter.y));
+            Vector2 finalOffset = screenOffset + randomJitter;
 
             if (popupTransform != null && canvasTransform != null)
             {
                 Camera uiCamera = targetCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : targetCanvas.worldCamera;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     canvasTransform,
-                    (Vector2)screenPosition + screenOffset,
+                    (Vector2)screenPosition + finalOffset,
                     uiCamera,
                     out Vector2 anchoredPosition);
 
@@ -107,7 +110,7 @@ namespace IdleOnDemo.Gameplay.Combat
             }
             else
             {
-                popup.transform.position = screenPosition + (Vector3)screenOffset;
+                popup.transform.position = screenPosition + (Vector3)finalOffset;
             }
 
             popup.Initialize(amount);
