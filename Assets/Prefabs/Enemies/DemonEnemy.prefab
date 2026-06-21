@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: deathObjectiveID
-      value: 
+      value: kill_demon
       objectReference: {fileID: 0}
     - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: spriteFacesLeftByDefault
@@ -150,13 +150,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleOnDemo.Gameplay.Inventory.EnemyDropTable
   drops:
-  - item: {fileID: 11400000, guid: d05c20291ba5d724585ffba2c6b063a6, type: 2}
+  - item: {fileID: 11400000, guid: d3fdc9a95bbc9a64080bdbe72577516d, type: 2}
     minAmount: 1
     maxAmount: 2
-    dropChance: 0.5
-  - item: {fileID: 11400000, guid: 309e8a6d4109d214e8f0927a8f4b782c, type: 2}
-    minAmount: 1
-    maxAmount: 10
     dropChance: 0.5
   spawnScatterRadius: 0.35
   groundLayer:
