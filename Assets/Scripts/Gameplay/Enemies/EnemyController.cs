@@ -45,6 +45,14 @@ namespace IdleOnDemo.Gameplay.Enemies
         [Header("References")]
         [SerializeField] private Animator animator;
         [SerializeField] private SpriteRenderer spriteRenderer;
+        /// <summary>
+        /// Controls which flipX convention this enemy's source art uses, since different enemy sprite sheets face different default directions.
+        /// </summary>
+        [SerializeField] private bool spriteFacesLeftByDefault = false;
+        /// <summary>
+        /// Disables gravity and locks vertical position so this enemy holds altitude during patrol when its sprite represents flight rather than ground movement.
+        /// </summary>
+        [SerializeField] private bool isFlyingEnemy = false;
 
         private Rigidbody2D rb;
         private EnemyState currentState = EnemyState.PatrolWait;
@@ -92,6 +100,12 @@ namespace IdleOnDemo.Gameplay.Enemies
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
+            if (isFlyingEnemy)
+            {
+                rb.gravityScale = 0f;
+                rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+            }
+
             animator ??= GetComponent<Animator>();
             spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
             currentHealth = maxHealth;
@@ -246,7 +260,7 @@ namespace IdleOnDemo.Gameplay.Enemies
         {
             if (spriteRenderer != null && !Mathf.Approximately(direction, 0f))
             {
-                spriteRenderer.flipX = direction < 0f;
+                spriteRenderer.flipX = spriteFacesLeftByDefault ? direction > 0f : direction < 0f;
             }
         }
 

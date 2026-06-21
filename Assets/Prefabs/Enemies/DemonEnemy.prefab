@@ -10,12 +10,52 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1399722427617169512, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_Name
-      value: SlimeEnemy
+      value: GoatEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680716789409564024, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_Size.x
+      value: 0.6330498
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680716789409564024, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.51818186
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680716789409564024, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.024900764
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680716789409564024, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.026746139
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: xpReward
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: coinReward
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: isFlyingEnemy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: deathObjectiveID
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805523792378743868, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: spriteFacesLeftByDefault
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4126655106392469921, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 15c4e6b950819f4469e3f07fcc464fde, type: 2}
+      objectReference: {fileID: 9100000, guid: df9316a735965a743ac01676436340a4, type: 2}
     - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.x
       value: 7
@@ -23,6 +63,14 @@ PrefabInstance:
     - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.y
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086819222810318465, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086819222810318465, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7086819222810318465, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -64,6 +112,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7934463037375752739, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7934463037375752739, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 815424164945274260, guid: d03fbd132424a1b49b0fd9aeff325448, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
