@@ -1,4 +1,5 @@
 using UnityEngine;
+using IdleOnDemo.UI;
 
 namespace IdleOnDemo.Gameplay.Inventory
 {
@@ -60,6 +61,8 @@ namespace IdleOnDemo.Gameplay.Inventory
 
             if (InventoryService.Instance.AddItem(item, quantity))
             {
+                string itemName = item != null && !string.IsNullOrWhiteSpace(item.DisplayName) ? item.DisplayName : item != null ? item.name : "Item";
+                LootNotificationManager.Instance?.ShowLoot(itemName, quantity);
                 Destroy(gameObject);
             }
         }

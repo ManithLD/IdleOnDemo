@@ -1,4 +1,5 @@
 using System;
+using IdleOnDemo.UI;
 using UnityEngine;
 
 namespace IdleOnDemo.Gameplay.Progression
@@ -89,6 +90,7 @@ namespace IdleOnDemo.Gameplay.Progression
 
             coins += amount;
             OnCoinsUpdated?.Invoke(coins);
+            LootNotificationManager.Instance?.ShowCoins(amount);
         }
 
         private void NormalizeStats()
