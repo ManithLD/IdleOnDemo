@@ -4,9 +4,7 @@ IdleOnDemo is a Unity 6 2D RPG / idle-MMO prototype focused on modular gameplay 
 
 ## Demo Video
 
-<video src="./IdleOnDemo.mp4" controls width="100%"></video>
-
-[Watch the demo video](./IdleOnDemo.mp4)
+[Watch the IdleOnDemo gameplay demo on YouTube](https://www.youtube.com/watch?v=GGXOgCrk8Oc)
 
 ## Technical Architecture
 
