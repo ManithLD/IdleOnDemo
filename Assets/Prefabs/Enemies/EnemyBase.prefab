@@ -176,13 +176,14 @@ MonoBehaviour:
   maxHealth: 100
   xpReward: 25
   coinReward: 5
-  dropItem: {fileID: 0}
   deathObjectiveID: kill_slime
   moveSpeed: 2
   targetReachedDistance: 0.08
   deathAnimationDuration: 1
   animator: {fileID: 4126655106392469921}
   spriteRenderer: {fileID: 7934463037375752739}
+  spriteFacesLeftByDefault: 0
+  isFlyingEnemy: 0
 --- !u!95 &4126655106392469921
 Animator:
   serializedVersion: 7
@@ -234,7 +235,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 1.003, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 1}
+  m_LocalScale: {x: 7, y: 7, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7086819222810318465}

@@ -24,6 +24,8 @@ namespace IdleOnDemo.Gameplay.Inventory
 
         [SerializeField] private List<DropEntry> drops = new List<DropEntry>();
         [SerializeField] private float spawnScatterRadius = 1f;
+        [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private float groundRaycastMaxDistance = 20f;
 
         private EnemyController enemyController;
         private bool hasDropped;
@@ -34,6 +36,7 @@ namespace IdleOnDemo.Gameplay.Inventory
         private void Awake()
         {
             enemyController = GetComponent<EnemyController>();
+            ConfigureGroundLayer();
         }
 
         /// <summary>
@@ -96,21 +99,31 @@ namespace IdleOnDemo.Gameplay.Inventory
                     continue;
                 }
 
-                float spawnX = transform.position.x + GetScatterOffset().x;
-                float spawnY = transform.position.y;
-                if (enemyController.HomeZone != null)
-                {
-                    BoxCollider2D zoneCollider = enemyController.HomeZone.GetComponent<BoxCollider2D>();
-                    if (zoneCollider != null)
-                    {
-                        spawnY = zoneCollider.bounds.min.y;
-                    }
-                }
+                Vector3 deathPosition = transform.position;
+                float spawnX = deathPosition.x + GetScatterOffset().x;
+                float spawnY = ResolveGroundY(deathPosition);
 
                 Vector3 spawnPosition = new Vector3(spawnX, spawnY + DropVerticalOffset, -2f);
                 ItemPickup pickup = Instantiate(drop.item.DropPrefab, spawnPosition, Quaternion.identity);
                 pickup.Initialize(drop.item, quantity);
             }
+        }
+
+        /// <summary>
+        /// Resolves the floor directly below the death position using the configured ground layer.
+        /// </summary>
+        /// <param name="deathPosition">The world position where the enemy died.</param>
+        /// <returns>The ground Y coordinate, or the enemy death Y if no ground is found.</returns>
+        private float ResolveGroundY(Vector3 deathPosition)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(deathPosition, Vector2.down, groundRaycastMaxDistance, groundLayer);
+            if (hit.collider != null)
+            {
+                return hit.point.y;
+            }
+
+            Debug.LogWarning($"EnemyDropTable could not find ground below {name} within {groundRaycastMaxDistance} units on layer mask {groundLayer.value}. Falling back to enemy death height.");
+            return deathPosition.y;
         }
 
         /// <summary>
@@ -134,6 +147,9 @@ namespace IdleOnDemo.Gameplay.Inventory
         private void OnValidate()
         {
             spawnScatterRadius = Mathf.Max(0f, spawnScatterRadius);
+            groundRaycastMaxDistance = Mathf.Max(0.1f, groundRaycastMaxDistance);
+            ConfigureGroundLayer();
+
             if (drops == null)
             {
                 return;
@@ -159,6 +175,17 @@ namespace IdleOnDemo.Gameplay.Inventory
             drop.minAmount = Mathf.Max(1, drop.minAmount);
             drop.maxAmount = Mathf.Max(drop.minAmount, drop.maxAmount);
             drop.dropChance = Mathf.Clamp01(drop.dropChance);
+        }
+
+        /// <summary>
+        /// Defaults drop placement raycasts to the same Ground layer convention used by player movement.
+        /// </summary>
+        private void ConfigureGroundLayer()
+        {
+            if (groundLayer.value == 0)
+            {
+                groundLayer = LayerMask.GetMask("Ground");
+            }
         }
     }
 }

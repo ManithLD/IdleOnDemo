@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1399722427617169512, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_Name
-      value: GoatEnemy
+      value: DemonEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 1680716789409564024, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_Size.x
@@ -58,11 +58,15 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: df9316a735965a743ac01676436340a4, type: 2}
     - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 7
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5254392529631775721, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7086819222810318465, guid: d2fcad913f7d439408e4eeed2e73864d, type: 3}
       propertyPath: m_LocalScale.x
@@ -155,3 +159,7 @@ MonoBehaviour:
     maxAmount: 10
     dropChance: 0.5
   spawnScatterRadius: 0.35
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  groundRaycastMaxDistance: 20
